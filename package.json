@@ -1,5 +1,5 @@
 {
-  "name": "details-dialog",
+  "name": "details-dialog-element",
   "version": "1.0.0",
   "description": "Custom dialog element to be used with &lt;details>",
   "main": "dist/index-umd.js",
@@ -12,7 +12,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/github/details-dialog.git"
+    "url": "git+https://github.com/github/details-dialog-element.git"
   },
   "keywords": [
     "dialog",
@@ -20,9 +20,9 @@
   ],
   "author": "",
   "bugs": {
-    "url": "https://github.com/github/details-dialog/issues"
+    "url": "https://github.com/github/details-dialog-element/issues"
   },
-  "homepage": "https://github.com/github/details-dialog#readme",
+  "homepage": "https://github.com/github/details-dialog-element#readme",
   "license": "MIT",
   "devDependencies": {
     "babel-cli": "^6.26.0",
