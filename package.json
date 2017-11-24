@@ -1,0 +1,24 @@
+{
+  "name": "details-dialog",
+  "version": "1.0.0",
+  "description": "Custom dialog element to be used with &lt;details>",
+  "main": "index.js",
+  "scripts": {
+    "test": "eslint index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/github/details-dialog.git"
+  },
+  "keywords": [],
+  "author": "",
+  "bugs": {
+    "url": "https://github.com/github/details-dialog/issues"
+  },
+  "homepage": "https://github.com/github/details-dialog#readme",
+  "license": "MIT",
+  "devDependencies": {
+    "eslint": "^4.10.0",
+    "eslint-plugin-github": "^0.19.0"
+  }
+}

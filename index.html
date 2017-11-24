@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <script type="module" src="index.js"></script>
+  <title>details-dialog-element demo</title>
+  <link href="https://unpkg.com/primer@latest/build/build.css" rel="stylesheet">
+  <style>
+    .details-with-dialog[open] summary {
+      cursor: default;
+    }
+
+    .details-with-dialog[open] summary:before {
+      content: " ";
+      background: rgba(0, 0, 0, 0.3);
+      display: block;
+      position: fixed;
+      top: 0;
+      right: 0;
+      left: 0;
+      bottom: 0;
+      z-index: 1;
+    }
+
+    /* This lives outside of custom element so it works without JS */
+    .details-dialog {
+      position: fixed;
+      margin: 10vh auto;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 2;
+    }
+
+    .mh-80 {
+      max-height: 80vh;
+    }
+
+    .narrow {
+      width: 400px;
+    }
+
+    .wide {
+      width: 640px;
+    }
+  </style>
+</head>
+<body class="p-4">
+  <details class="details-with-dialog">
+    <summary>Bare</summary>
+    <details-dialog class="details-dialog">
+      <p class="mr-6 pr-3">But you can click anywhere to dismiss without JS.</p>
+      <button data-close-dialog type="button" autofocus>Close button only works with JS</button>
+    </details-dialog>
+  </details>
+
+  <details class="details-reset details-with-dialog mt-4">
+    <summary class="btn">Dialog</summary>
+    <details-dialog class="details-dialog anim-fade-in fast">
+      <div class="Box d-flex flex-column wide mh-80">
+        <div class="Box-header">
+          Title
+        </div>
+        <div class="Box-body overflow-auto">
+          Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+        </div>
+        <div class="Box-footer">
+          <button type="button" class="btn btn-block" data-close-dialog>Close</button>
+        </div>
+      </div>
+    </details-dialog>
+  </details>
+
+  <details class="details-reset details-with-dialog mt-4">
+    <summary class="btn">Dialog with autofocus</summary>
+    <details-dialog class="details-dialog anim-fade-in fast">
+      <div class="Box d-flex flex-column narrow mh-80">
+        <div class="Box-header">
+          Title
+        </div>
+        <div class="Box-body overflow-auto">
+          Lorem ipsum dolor sit amet, <a href="#url">consectetur adipisicing elit</a>, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+        </div>
+        <div class="Box-footer">
+          <button type="button" class="btn btn-block" autofocus data-close-dialog>Close</button>
+        </div>
+      </div>
+    </details-dialog>
+  </details>
+</body>
+</html>
