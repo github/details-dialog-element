@@ -78,8 +78,7 @@ class DetailsDialogElement extends HTMLElement {
 
     const modal = event.currentTarget
     const elements = Array.from(modal.querySelectorAll('a, input, button, textarea')).filter(function(element) {
-      // Need visible check
-      return !element.disabled
+      return !element.disabled || (element.offsetWidth > 0 && element.offsetHeight > 0)
     })
 
     elements.unshift(this.closeButton)

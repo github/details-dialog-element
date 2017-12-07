@@ -68,6 +68,9 @@
   ;
   Object.setPrototypeOf(_CustomElement.prototype, HTMLElement.prototype);
   Object.setPrototypeOf(_CustomElement, HTMLElement);
+  var tmpl = document.createElement('template');
+  tmpl.innerHTML = '\n  <style>\n    .close-button {\n      background: none;\n      position: absolute;\n      right: 0;\n      top: 0;\n      padding: 20px;\n      border: 0;\n      line-height: 1;\n    }\n  </style>\n  <slot></slot>\n  <button type="button" class="close-button" aria-label="Close dialog" data-close-dialog>&#9587;</button>\n';
+  if (window.ShadyCSS) window.ShadyCSS.prepareTemplate(tmpl, 'details-dialog');
 
   var DetailsDialogElement = function (_CustomElement2) {
     _inherits(DetailsDialogElement, _CustomElement2);
@@ -77,10 +80,13 @@
 
       var _this = _possibleConstructorReturn(this, (DetailsDialogElement.__proto__ || Object.getPrototypeOf(DetailsDialogElement)).call(this));
 
+      if (window.ShadyCSS) window.ShadyCSS.styleElement(_this);
       _this.attachShadow({ mode: 'open' });
-      _this.shadowRoot.innerHTML = '\n      <style>\n        .close-button {\n          background: none;\n          position: absolute;\n          right: 0;\n          top: 0;\n          padding: 20px;\n          border: 0;\n          line-height: 1;\n        }\n      </style>\n      <slot></slot>\n      <button type="button" class="close-button" aria-label="Close dialog" data-close-dialog>&#9587;</button>\n    ';
+      _this.shadowRoot.appendChild(document.importNode(tmpl.content, true));
+
       _this.details = _this.parentElement;
       _this.closeButton = _this.shadowRoot.querySelector('.close-button');
+      _this.setAttribute('role', 'dialog');
 
       var keyDownHelpers = _this._keyDownHelpers.bind(_this);
       var captureDismissal = _this._captureDismissal.bind(_this);
@@ -102,11 +108,6 @@
     }
 
     _createClass(DetailsDialogElement, [{
-      key: 'connectedCallback',
-      value: function connectedCallback() {
-        this.setAttribute('role', 'dialog');
-      }
-    }, {
       key: '_autofocus',
       value: function _autofocus() {
         var autofocus = this.querySelector('[autofocus]');
@@ -139,8 +140,7 @@
 
         var modal = event.currentTarget;
         var elements = Array.from(modal.querySelectorAll('a, input, button, textarea')).filter(function (element) {
-          // Need visible check
-          return !element.disabled;
+          return !element.disabled || element.offsetWidth > 0 && element.offsetHeight > 0;
         });
 
         elements.unshift(this.closeButton);
