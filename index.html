@@ -4,13 +4,14 @@
   <meta charset="utf-8">
   <script type="module" src="index.js"></script>
   <title>details-dialog-element demo</title>
+  <link href="./index.css" rel="stylesheet">
   <link href="https://unpkg.com/primer@latest/build/build.css" rel="stylesheet">
   <style>
-    .details-with-dialog[open] summary {
+    .details-with-dialog[open] > summary {
       cursor: default;
     }
 
-    .details-with-dialog[open] summary:before {
+    .details-with-dialog[open] > summary:before {
       content: " ";
       background: rgba(0, 0, 0, 0.3);
       display: block;
@@ -20,16 +21,6 @@
       left: 0;
       bottom: 0;
       z-index: 1;
-    }
-
-    /* This lives outside of custom element so it works without JS */
-    .details-dialog {
-      position: fixed;
-      margin: 10vh auto;
-      top: 0;
-      left: 50%;
-      transform: translateX(-50%);
-      z-index: 2;
     }
 
     .mh-80 {
@@ -48,7 +39,7 @@
 <body class="p-4">
   <details class="details-with-dialog">
     <summary>Bare</summary>
-    <details-dialog class="details-dialog">
+    <details-dialog>
       <p class="mr-6 pr-3">But you can click anywhere to dismiss without JS.</p>
       <button data-close-dialog type="button" autofocus>Close button only works with JS</button>
     </details-dialog>

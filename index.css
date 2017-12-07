@@ -1,0 +1,9 @@
+/* This lives outside of element so it can work without JS */
+details-dialog {
+  position: fixed;
+  margin: 10vh auto;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 2;
+}
