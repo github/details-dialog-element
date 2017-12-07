@@ -19,6 +19,7 @@ class DetailsDialogElement extends HTMLElement {
     `
     this.details = this.parentElement
     this.closeButton = this.shadowRoot.querySelector('.close-button')
+    this.setAttribute('role', 'dialog')
 
     const keyDownHelpers = this._keyDownHelpers.bind(this)
     const captureDismissal = this._captureDismissal.bind(this)
@@ -40,10 +41,6 @@ class DetailsDialogElement extends HTMLElement {
       }.bind(this),
       {capture: true}
     )
-  }
-
-  connectedCallback() {
-    this.setAttribute('role', 'dialog')
   }
 
   _autofocus() {
