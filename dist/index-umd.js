@@ -140,7 +140,7 @@
 
         var modal = event.currentTarget;
         var elements = Array.from(modal.querySelectorAll('a, input, button, textarea')).filter(function (element) {
-          return !element.disabled || element.offsetWidth > 0 && element.offsetHeight > 0;
+          return !element.disabled && element.offsetWidth > 0 && element.offsetHeight > 0;
         });
 
         elements.unshift(this.closeButton);
