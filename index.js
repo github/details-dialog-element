@@ -1,22 +1,29 @@
+const tmpl = document.createElement('template')
+tmpl.innerHTML = `
+  <style>
+    .close-button {
+      background: none;
+      position: absolute;
+      right: 0;
+      top: 0;
+      padding: 20px;
+      border: 0;
+      line-height: 1;
+    }
+  </style>
+  <slot></slot>
+  <button type="button" class="close-button" aria-label="Close dialog" data-close-dialog>&#9587;</button>
+`
+if (window.ShadyCSS) window.ShadyCSS.prepareTemplate(tmpl, 'details-dialog')
+
 class DetailsDialogElement extends HTMLElement {
   constructor() {
     super()
+
+    if (window.ShadyCSS) window.ShadyCSS.styleElement(this)
     this.attachShadow({mode: 'open'})
-    this.shadowRoot.innerHTML = `
-      <style>
-        .close-button {
-          background: none;
-          position: absolute;
-          right: 0;
-          top: 0;
-          padding: 20px;
-          border: 0;
-          line-height: 1;
-        }
-      </style>
-      <slot></slot>
-      <button type="button" class="close-button" aria-label="Close dialog" data-close-dialog>&#9587;</button>
-    `
+    this.shadowRoot.appendChild(document.importNode(tmpl.content, true))
+
     this.details = this.parentElement
     this.closeButton = this.shadowRoot.querySelector('.close-button')
     this.setAttribute('role', 'dialog')
