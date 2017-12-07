@@ -5,5 +5,5 @@ details-dialog {
   top: 0;
   left: 50%;
   transform: translateX(-50%);
-  z-index: 2;
+  z-index: 999;
 }
