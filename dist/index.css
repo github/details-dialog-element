@@ -7,3 +7,13 @@ details-dialog {
   transform: translateX(-50%);
   z-index: 999;
 }
+
+details-dialog .dd-close-button {
+  background: none;
+  position: absolute;
+  right: 0;
+  top: 0;
+  padding: 20px;
+  border: 0;
+  line-height: 1;
+}

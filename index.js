@@ -1,31 +1,8 @@
-const tmpl = document.createElement('template')
-tmpl.innerHTML = `
-  <style>
-    .close-button {
-      background: none;
-      position: absolute;
-      right: 0;
-      top: 0;
-      padding: 20px;
-      border: 0;
-      line-height: 1;
-    }
-  </style>
-  <slot></slot>
-  <button type="button" class="close-button" aria-label="Close dialog" data-close-dialog>&#9587;</button>
-`
-if (window.ShadyCSS) window.ShadyCSS.prepareTemplate(tmpl, 'details-dialog')
-
 class DetailsDialogElement extends HTMLElement {
   constructor() {
     super()
-
-    if (window.ShadyCSS) window.ShadyCSS.styleElement(this)
-    this.attachShadow({mode: 'open'})
-    this.shadowRoot.appendChild(document.importNode(tmpl.content, true))
-
+    this._createCloseButton()
     this.details = this.parentElement
-    this.closeButton = this.shadowRoot.querySelector('.close-button')
     this.setAttribute('role', 'dialog')
 
     const keyDownHelpers = this._keyDownHelpers.bind(this)
@@ -37,17 +14,27 @@ class DetailsDialogElement extends HTMLElement {
         if (this.details.open) {
           this._autofocus()
           this.details.addEventListener('keydown', keyDownHelpers)
-          this.shadowRoot.addEventListener('click', captureDismissal)
+          this.addEventListener('click', captureDismissal)
         } else {
           const summary = this.details.querySelector('summary')
           summary.focus()
 
           this.details.removeEventListener('keydown', keyDownHelpers)
-          this.shadowRoot.removeEventListener('click', captureDismissal)
+          this.removeEventListener('click', captureDismissal)
         }
       }.bind(this),
       {capture: true}
     )
+  }
+
+  _createCloseButton() {
+    this.closeButton = document.createElement('button')
+    this.closeButton.innerHTML = '&#9587;'
+    this.closeButton.classList.add('dd-close-button')
+    this.closeButton.setAttribute('type', 'button')
+    this.closeButton.setAttribute('aria-label', 'Close dialog')
+    this.closeButton.setAttribute('data-close-dialog', true)
+    this.appendChild(this.closeButton)
   }
 
   _autofocus() {
