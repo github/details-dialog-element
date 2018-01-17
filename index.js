@@ -16,6 +16,10 @@ class DetailsDialogElement extends HTMLElement {
           this.details.addEventListener('keydown', keyDownHelpers)
           this.addEventListener('click', captureDismissal)
         } else {
+          for (const form of this.querySelectorAll('form')) {
+            form.reset()
+          }
+
           const summary = this.details.querySelector('summary')
           summary.focus()
 

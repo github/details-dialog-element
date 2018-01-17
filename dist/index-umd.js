@@ -68,9 +68,6 @@
   ;
   Object.setPrototypeOf(_CustomElement.prototype, HTMLElement.prototype);
   Object.setPrototypeOf(_CustomElement, HTMLElement);
-  var tmpl = document.createElement('template');
-  tmpl.innerHTML = '\n  <style>\n    .close-button {\n      background: none;\n      position: absolute;\n      right: 0;\n      top: 0;\n      padding: 20px;\n      border: 0;\n      line-height: 1;\n    }\n  </style>\n  <slot></slot>\n  <button type="button" class="close-button" aria-label="Close dialog" data-close-dialog>&#9587;</button>\n';
-  if (window.ShadyCSS) window.ShadyCSS.prepareTemplate(tmpl, 'details-dialog');
 
   var DetailsDialogElement = function (_CustomElement2) {
     _inherits(DetailsDialogElement, _CustomElement2);
@@ -80,12 +77,8 @@
 
       var _this = _possibleConstructorReturn(this, (DetailsDialogElement.__proto__ || Object.getPrototypeOf(DetailsDialogElement)).call(this));
 
-      if (window.ShadyCSS) window.ShadyCSS.styleElement(_this);
-      _this.attachShadow({ mode: 'open' });
-      _this.shadowRoot.appendChild(document.importNode(tmpl.content, true));
-
+      _this._createCloseButton();
       _this.details = _this.parentElement;
-      _this.closeButton = _this.shadowRoot.querySelector('.close-button');
       _this.setAttribute('role', 'dialog');
 
       var keyDownHelpers = _this._keyDownHelpers.bind(_this);
@@ -95,19 +88,55 @@
         if (this.details.open) {
           this._autofocus();
           this.details.addEventListener('keydown', keyDownHelpers);
-          this.shadowRoot.addEventListener('click', captureDismissal);
+          this.addEventListener('click', captureDismissal);
         } else {
+          var _iteratorNormalCompletion = true;
+          var _didIteratorError = false;
+          var _iteratorError = undefined;
+
+          try {
+            for (var _iterator = this.querySelectorAll('form')[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+              var form = _step.value;
+
+              form.reset();
+            }
+          } catch (err) {
+            _didIteratorError = true;
+            _iteratorError = err;
+          } finally {
+            try {
+              if (!_iteratorNormalCompletion && _iterator.return) {
+                _iterator.return();
+              }
+            } finally {
+              if (_didIteratorError) {
+                throw _iteratorError;
+              }
+            }
+          }
+
           var summary = this.details.querySelector('summary');
           summary.focus();
 
           this.details.removeEventListener('keydown', keyDownHelpers);
-          this.shadowRoot.removeEventListener('click', captureDismissal);
+          this.removeEventListener('click', captureDismissal);
         }
       }.bind(_this), { capture: true });
       return _this;
     }
 
     _createClass(DetailsDialogElement, [{
+      key: '_createCloseButton',
+      value: function _createCloseButton() {
+        this.closeButton = document.createElement('button');
+        this.closeButton.innerHTML = '&#9587;';
+        this.closeButton.classList.add('dd-close-button');
+        this.closeButton.setAttribute('type', 'button');
+        this.closeButton.setAttribute('aria-label', 'Close dialog');
+        this.closeButton.setAttribute('data-close-dialog', true);
+        this.appendChild(this.closeButton);
+      }
+    }, {
       key: '_autofocus',
       value: function _autofocus() {
         var autofocus = this.querySelector('[autofocus]');
