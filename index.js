@@ -1,18 +1,18 @@
 class DetailsDialogElement extends HTMLElement {
   constructor() {
     super()
-    this._createCloseButton()
+    this.createCloseButton()
     this.details = this.parentElement
     this.setAttribute('role', 'dialog')
 
-    const keyDownHelpers = this._keyDownHelpers.bind(this)
-    const captureDismissal = this._captureDismissal.bind(this)
+    const keyDownHelpers = this.keyDownHelpers.bind(this)
+    const captureDismissal = this.captureDismissal.bind(this)
 
     this.details.addEventListener(
       'toggle',
       function() {
         if (this.details.open) {
-          this._autofocus()
+          this.autofocus()
           this.details.addEventListener('keydown', keyDownHelpers)
           this.addEventListener('click', captureDismissal)
         } else {
@@ -31,7 +31,7 @@ class DetailsDialogElement extends HTMLElement {
     )
   }
 
-  _createCloseButton() {
+  createCloseButton() {
     this.closeButton = document.createElement('button')
     this.closeButton.innerHTML = '&#9587;'
     this.closeButton.classList.add('dd-close-button')
@@ -41,7 +41,7 @@ class DetailsDialogElement extends HTMLElement {
     this.appendChild(this.closeButton)
   }
 
-  _autofocus() {
+  autofocus() {
     let autofocus = this.querySelector('[autofocus]')
     if (!autofocus) {
       autofocus = this
@@ -50,21 +50,21 @@ class DetailsDialogElement extends HTMLElement {
     autofocus.focus()
   }
 
-  _captureDismissal(event) {
+  captureDismissal(event) {
     if (event.target.hasAttribute('data-close-dialog')) {
       this.details.open = false
     }
   }
 
-  _keyDownHelpers(event) {
+  keyDownHelpers(event) {
     if (event.key === 'Escape') {
       event.currentTarget.open = false
     } else if (event.key === 'Tab') {
-      this._restrictTabBehavior(event)
+      this.restrictTabBehavior(event)
     }
   }
 
-  _restrictTabBehavior(event) {
+  restrictTabBehavior(event) {
     event.preventDefault()
 
     const modal = event.currentTarget
