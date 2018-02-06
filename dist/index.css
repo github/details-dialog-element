@@ -17,5 +17,5 @@ details-dialog .dd-close-button {
   top: 0;
   padding: 20px;
   border: 0;
-  line-height: 1;
+  line-height: 0;
 }
