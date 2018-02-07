@@ -1,18 +1,18 @@
 class DetailsDialogElement extends HTMLElement {
   constructor() {
     super()
-    this._createCloseButton()
+    this.createCloseButton()
     this.details = this.parentElement
     this.setAttribute('role', 'dialog')
 
-    const keyDownHelpers = this._keyDownHelpers.bind(this)
-    const captureDismissal = this._captureDismissal.bind(this)
+    const keyDownHelpers = this.keyDownHelpers.bind(this)
+    const captureDismissal = this.captureDismissal.bind(this)
 
     this.details.addEventListener(
       'toggle',
       function() {
         if (this.details.open) {
-          this._autofocus()
+          this.autofocus()
           this.details.addEventListener('keydown', keyDownHelpers)
           this.addEventListener('click', captureDismissal)
         } else {
@@ -31,9 +31,9 @@ class DetailsDialogElement extends HTMLElement {
     )
   }
 
-  _createCloseButton() {
+  createCloseButton() {
     this.closeButton = document.createElement('button')
-    this.closeButton.innerHTML = '&#9587;'
+    this.closeButton.innerHTML = this.closeIcon()
     this.closeButton.classList.add('dd-close-button')
     this.closeButton.setAttribute('type', 'button')
     this.closeButton.setAttribute('aria-label', 'Close dialog')
@@ -41,7 +41,7 @@ class DetailsDialogElement extends HTMLElement {
     this.appendChild(this.closeButton)
   }
 
-  _autofocus() {
+  autofocus() {
     let autofocus = this.querySelector('[autofocus]')
     if (!autofocus) {
       autofocus = this
@@ -50,21 +50,21 @@ class DetailsDialogElement extends HTMLElement {
     autofocus.focus()
   }
 
-  _captureDismissal(event) {
+  captureDismissal(event) {
     if (event.target.hasAttribute('data-close-dialog')) {
       this.details.open = false
     }
   }
 
-  _keyDownHelpers(event) {
+  keyDownHelpers(event) {
     if (event.key === 'Escape') {
       event.currentTarget.open = false
     } else if (event.key === 'Tab') {
-      this._restrictTabBehavior(event)
+      this.restrictTabBehavior(event)
     }
   }
 
-  _restrictTabBehavior(event) {
+  restrictTabBehavior(event) {
     event.preventDefault()
 
     const modal = event.currentTarget
@@ -86,6 +86,12 @@ class DetailsDialogElement extends HTMLElement {
     }
 
     elements[targetIndex].focus()
+  }
+
+  // Pulled from https://github.com/primer/octicons
+  // We're only using one octicon so it doesn't make sense to include the whole module
+  closeIcon() {
+    return '<svg version="1.1" width="12" height="16" viewBox="0 0 12 16" aria-hidden="true"><path d="M7.48 8l3.75 3.75-1.48 1.48L6 9.48l-3.75 3.75-1.48-1.48L4.52 8 .77 4.25l1.48-1.48L6 6.52l3.75-3.75 1.48 1.48z"/></svg>'
   }
 }
 

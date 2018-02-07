@@ -77,16 +77,16 @@
 
       var _this = _possibleConstructorReturn(this, (DetailsDialogElement.__proto__ || Object.getPrototypeOf(DetailsDialogElement)).call(this));
 
-      _this._createCloseButton();
+      _this.createCloseButton();
       _this.details = _this.parentElement;
       _this.setAttribute('role', 'dialog');
 
-      var keyDownHelpers = _this._keyDownHelpers.bind(_this);
-      var captureDismissal = _this._captureDismissal.bind(_this);
+      var keyDownHelpers = _this.keyDownHelpers.bind(_this);
+      var captureDismissal = _this.captureDismissal.bind(_this);
 
       _this.details.addEventListener('toggle', function () {
         if (this.details.open) {
-          this._autofocus();
+          this.autofocus();
           this.details.addEventListener('keydown', keyDownHelpers);
           this.addEventListener('click', captureDismissal);
         } else {
@@ -126,10 +126,10 @@
     }
 
     _createClass(DetailsDialogElement, [{
-      key: '_createCloseButton',
-      value: function _createCloseButton() {
+      key: 'createCloseButton',
+      value: function createCloseButton() {
         this.closeButton = document.createElement('button');
-        this.closeButton.innerHTML = '&#9587;';
+        this.closeButton.innerHTML = this.closeIcon();
         this.closeButton.classList.add('dd-close-button');
         this.closeButton.setAttribute('type', 'button');
         this.closeButton.setAttribute('aria-label', 'Close dialog');
@@ -137,8 +137,8 @@
         this.appendChild(this.closeButton);
       }
     }, {
-      key: '_autofocus',
-      value: function _autofocus() {
+      key: 'autofocus',
+      value: function autofocus() {
         var autofocus = this.querySelector('[autofocus]');
         if (!autofocus) {
           autofocus = this;
@@ -147,24 +147,24 @@
         autofocus.focus();
       }
     }, {
-      key: '_captureDismissal',
-      value: function _captureDismissal(event) {
+      key: 'captureDismissal',
+      value: function captureDismissal(event) {
         if (event.target.hasAttribute('data-close-dialog')) {
           this.details.open = false;
         }
       }
     }, {
-      key: '_keyDownHelpers',
-      value: function _keyDownHelpers(event) {
+      key: 'keyDownHelpers',
+      value: function keyDownHelpers(event) {
         if (event.key === 'Escape') {
           event.currentTarget.open = false;
         } else if (event.key === 'Tab') {
-          this._restrictTabBehavior(event);
+          this.restrictTabBehavior(event);
         }
       }
     }, {
-      key: '_restrictTabBehavior',
-      value: function _restrictTabBehavior(event) {
+      key: 'restrictTabBehavior',
+      value: function restrictTabBehavior(event) {
         event.preventDefault();
 
         var modal = event.currentTarget;
@@ -188,6 +188,11 @@
         }
 
         elements[targetIndex].focus();
+      }
+    }, {
+      key: 'closeIcon',
+      value: function closeIcon() {
+        return '<svg version="1.1" width="12" height="16" viewBox="0 0 12 16" aria-hidden="true"><path d="M7.48 8l3.75 3.75-1.48 1.48L6 9.48l-3.75 3.75-1.48-1.48L4.52 8 .77 4.25l1.48-1.48L6 6.52l3.75-3.75 1.48 1.48z"/></svg>';
       }
     }]);
 
