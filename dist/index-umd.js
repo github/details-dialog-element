@@ -75,57 +75,59 @@
     function DetailsDialogElement() {
       _classCallCheck(this, DetailsDialogElement);
 
-      var _this = _possibleConstructorReturn(this, (DetailsDialogElement.__proto__ || Object.getPrototypeOf(DetailsDialogElement)).call(this));
-
-      _this.createCloseButton();
-      _this.details = _this.parentElement;
-      _this.setAttribute('role', 'dialog');
-
-      var keyDownHelpers = _this.keyDownHelpers.bind(_this);
-      var captureDismissal = _this.captureDismissal.bind(_this);
-
-      _this.details.addEventListener('toggle', function () {
-        if (this.details.open) {
-          this.autofocus();
-          this.details.addEventListener('keydown', keyDownHelpers);
-          this.addEventListener('click', captureDismissal);
-        } else {
-          var _iteratorNormalCompletion = true;
-          var _didIteratorError = false;
-          var _iteratorError = undefined;
-
-          try {
-            for (var _iterator = this.querySelectorAll('form')[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-              var form = _step.value;
-
-              form.reset();
-            }
-          } catch (err) {
-            _didIteratorError = true;
-            _iteratorError = err;
-          } finally {
-            try {
-              if (!_iteratorNormalCompletion && _iterator.return) {
-                _iterator.return();
-              }
-            } finally {
-              if (_didIteratorError) {
-                throw _iteratorError;
-              }
-            }
-          }
-
-          var summary = this.details.querySelector('summary');
-          summary.focus();
-
-          this.details.removeEventListener('keydown', keyDownHelpers);
-          this.removeEventListener('click', captureDismissal);
-        }
-      }.bind(_this), { capture: true });
-      return _this;
+      return _possibleConstructorReturn(this, (DetailsDialogElement.__proto__ || Object.getPrototypeOf(DetailsDialogElement)).apply(this, arguments));
     }
 
     _createClass(DetailsDialogElement, [{
+      key: 'connectedCallback',
+      value: function connectedCallback() {
+        this.createCloseButton();
+        this.details = this.parentElement;
+        this.setAttribute('role', 'dialog');
+
+        var keyDownHelpers = this.keyDownHelpers.bind(this);
+        var captureDismissal = this.captureDismissal.bind(this);
+
+        this.details.addEventListener('toggle', function () {
+          if (this.details.open) {
+            this.autofocus();
+            this.details.addEventListener('keydown', keyDownHelpers);
+            this.addEventListener('click', captureDismissal);
+          } else {
+            var _iteratorNormalCompletion = true;
+            var _didIteratorError = false;
+            var _iteratorError = undefined;
+
+            try {
+              for (var _iterator = this.querySelectorAll('form')[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+                var form = _step.value;
+
+                form.reset();
+              }
+            } catch (err) {
+              _didIteratorError = true;
+              _iteratorError = err;
+            } finally {
+              try {
+                if (!_iteratorNormalCompletion && _iterator.return) {
+                  _iterator.return();
+                }
+              } finally {
+                if (_didIteratorError) {
+                  throw _iteratorError;
+                }
+              }
+            }
+
+            var summary = this.details.querySelector('summary');
+            summary.focus();
+
+            this.details.removeEventListener('keydown', keyDownHelpers);
+            this.removeEventListener('click', captureDismissal);
+          }
+        }.bind(this), { capture: true });
+      }
+    }, {
       key: 'createCloseButton',
       value: function createCloseButton() {
         this.closeButton = document.createElement('button');

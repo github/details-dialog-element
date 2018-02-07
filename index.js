@@ -1,6 +1,5 @@
 class DetailsDialogElement extends HTMLElement {
-  constructor() {
-    super()
+  connectedCallback() {
     this.createCloseButton()
     this.details = this.parentElement
     this.setAttribute('role', 'dialog')
