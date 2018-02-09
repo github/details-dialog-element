@@ -25,7 +25,7 @@
   "homepage": "https://github.com/github/details-dialog-element#readme",
   "license": "MIT",
   "publishConfig": {
-    "registry": "https://npm.registry.github.com/@github"
+    "registry": "https://npm.registry.github.com/"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
