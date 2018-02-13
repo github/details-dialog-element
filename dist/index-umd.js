@@ -68,6 +68,70 @@
   ;
   Object.setPrototypeOf(_CustomElement.prototype, HTMLElement.prototype);
   Object.setPrototypeOf(_CustomElement, HTMLElement);
+  function createCloseButton(el) {
+    var closeButton = document.createElement('button');
+    closeButton.innerHTML = closeIcon();
+    closeButton.classList.add('dd-close-button');
+    closeButton.setAttribute('type', 'button');
+    closeButton.setAttribute('aria-label', 'Close dialog');
+    closeButton.setAttribute('data-close-dialog', true);
+    el.appendChild(closeButton);
+    return closeButton;
+  }
+
+  function autofocus(el) {
+    var autofocus = el.querySelector('[autofocus]');
+    if (!autofocus) {
+      autofocus = el;
+      el.setAttribute('tabindex', '-1');
+    }
+    autofocus.focus();
+  }
+
+  function captureDismissal(event) {
+    if (event.target.hasAttribute('data-close-dialog') || event.target.closest('[data-close-dialog]')) {
+      event.target.closest('details').open = false;
+    }
+  }
+
+  function keyDownHelpers(event) {
+    if (event.key === 'Escape') {
+      event.currentTarget.open = false;
+    } else if (event.key === 'Tab') {
+      restrictTabBehavior(event);
+    }
+  }
+
+  function restrictTabBehavior(event) {
+    event.preventDefault();
+
+    var dialog = event.currentTarget;
+    var elements = Array.from(dialog.querySelectorAll('a, input, button, textarea')).filter(function (element) {
+      return !element.disabled && element.offsetWidth > 0 && element.offsetHeight > 0;
+    });
+
+    var movement = event.shiftKey ? -1 : 1;
+    var currentFocus = elements.filter(function (el) {
+      return el.matches(':focus');
+    })[0];
+    var targetIndex = elements.length - 1;
+
+    if (currentFocus) {
+      var currentIndex = elements.indexOf(currentFocus);
+      if (currentIndex !== -1) {
+        var newIndex = currentIndex + movement;
+        if (newIndex >= 0) targetIndex = newIndex % elements.length;
+      }
+    }
+
+    elements[targetIndex].focus();
+  }
+
+  // Pulled from https://github.com/primer/octicons
+  // We're only using one octicon so it doesn't make sense to include the whole module
+  function closeIcon() {
+    return '<svg version="1.1" width="12" height="16" viewBox="0 0 12 16" aria-hidden="true"><path d="M7.48 8l3.75 3.75-1.48 1.48L6 9.48l-3.75 3.75-1.48-1.48L4.52 8 .77 4.25l1.48-1.48L6 6.52l3.75-3.75 1.48 1.48z"/></svg>';
+  }
 
   var DetailsDialogElement = function (_CustomElement2) {
     _inherits(DetailsDialogElement, _CustomElement2);
@@ -81,16 +145,13 @@
     _createClass(DetailsDialogElement, [{
       key: 'connectedCallback',
       value: function connectedCallback() {
-        this.createCloseButton();
+        this.closeButton = createCloseButton(this);
         this.details = this.parentElement;
         this.setAttribute('role', 'dialog');
 
-        var keyDownHelpers = this.keyDownHelpers.bind(this);
-        var captureDismissal = this.captureDismissal.bind(this);
-
         this.details.addEventListener('toggle', function () {
           if (this.details.open) {
-            this.autofocus();
+            autofocus(this);
             this.details.addEventListener('keydown', keyDownHelpers);
             this.addEventListener('click', captureDismissal);
           } else {
@@ -128,73 +189,9 @@
         }.bind(this), { capture: true });
       }
     }, {
-      key: 'createCloseButton',
-      value: function createCloseButton() {
-        this.closeButton = document.createElement('button');
-        this.closeButton.innerHTML = this.closeIcon();
-        this.closeButton.classList.add('dd-close-button');
-        this.closeButton.setAttribute('type', 'button');
-        this.closeButton.setAttribute('aria-label', 'Close dialog');
-        this.closeButton.setAttribute('data-close-dialog', true);
-        this.appendChild(this.closeButton);
-      }
-    }, {
-      key: 'autofocus',
-      value: function autofocus() {
-        var autofocus = this.querySelector('[autofocus]');
-        if (!autofocus) {
-          autofocus = this;
-          this.setAttribute('tabindex', '-1');
-        }
-        autofocus.focus();
-      }
-    }, {
-      key: 'captureDismissal',
-      value: function captureDismissal(event) {
-        if (event.target.hasAttribute('data-close-dialog')) {
-          this.details.open = false;
-        }
-      }
-    }, {
-      key: 'keyDownHelpers',
-      value: function keyDownHelpers(event) {
-        if (event.key === 'Escape') {
-          event.currentTarget.open = false;
-        } else if (event.key === 'Tab') {
-          this.restrictTabBehavior(event);
-        }
-      }
-    }, {
-      key: 'restrictTabBehavior',
-      value: function restrictTabBehavior(event) {
-        event.preventDefault();
-
-        var modal = event.currentTarget;
-        var elements = Array.from(modal.querySelectorAll('a, input, button, textarea')).filter(function (element) {
-          return !element.disabled && element.offsetWidth > 0 && element.offsetHeight > 0;
-        });
-
-        elements.unshift(this.closeButton);
-        var movement = event.shiftKey ? -1 : 1;
-        var currentFocus = elements.filter(function (el) {
-          return el.matches(':focus');
-        })[0];
-        var targetIndex = elements.length - 1;
-
-        if (currentFocus) {
-          var currentIndex = elements.indexOf(currentFocus);
-          if (currentIndex !== -1) {
-            var newIndex = currentIndex + movement;
-            if (newIndex >= 0) targetIndex = newIndex % elements.length;
-          }
-        }
-
-        elements[targetIndex].focus();
-      }
-    }, {
-      key: 'closeIcon',
-      value: function closeIcon() {
-        return '<svg version="1.1" width="12" height="16" viewBox="0 0 12 16" aria-hidden="true"><path d="M7.48 8l3.75 3.75-1.48 1.48L6 9.48l-3.75 3.75-1.48-1.48L4.52 8 .77 4.25l1.48-1.48L6 6.52l3.75-3.75 1.48 1.48z"/></svg>';
+      key: 'toggle',
+      value: function toggle(boolean) {
+        boolean ? this.details.setAttribute('open', true) : this.details.removeAttribute('open');
       }
     }]);
 
