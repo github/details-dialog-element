@@ -1,5 +1,5 @@
 {
-  "name": "details-dialog-element",
+  "name": "@github/details-dialog-element",
   "version": "1.0.0",
   "description": "Custom dialog element to be used with &lt;details>",
   "main": "dist/index-umd.js",
@@ -24,6 +24,9 @@
   },
   "homepage": "https://github.com/github/details-dialog-element#readme",
   "license": "MIT",
+  "publishConfig": {
+    "registry": "https://npm.registry.github.com/"
+  },
   "devDependencies": {
     "babel-cli": "^6.26.0",
     "babel-plugin-transform-custom-element-classes": "^0.1.0",
