@@ -1,6 +1,6 @@
 {
   "name": "@github/details-dialog-element",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Custom dialog element to be used with &lt;details>",
   "main": "dist/index-umd.js",
   "files": [
