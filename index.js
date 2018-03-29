@@ -78,10 +78,7 @@ class DetailsDialogElement extends HTMLElement {
           for (const form of this.querySelectorAll('form')) {
             form.reset()
           }
-
-          const summary = this.details.querySelector('summary')
-          summary.focus()
-
+          this.details.querySelector('summary').focus()
           this.details.removeEventListener('keydown', keydown)
           this.removeEventListener('click', captureDismissal)
         }
