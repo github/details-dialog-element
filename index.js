@@ -69,7 +69,7 @@ class DetailsDialogElement extends HTMLElement {
 
     this.details.addEventListener(
       'toggle',
-      function() {
+      () => {
         if (this.details.open) {
           autofocus(this)
           this.details.addEventListener('keydown', keydown)
@@ -82,7 +82,7 @@ class DetailsDialogElement extends HTMLElement {
           this.details.removeEventListener('keydown', keydown)
           this.removeEventListener('click', captureDismissal)
         }
-      }.bind(this),
+      },
       {capture: true}
     )
   }
