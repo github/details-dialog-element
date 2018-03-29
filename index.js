@@ -90,8 +90,8 @@ class DetailsDialogElement extends HTMLElement {
     )
   }
 
-  toggle(boolean) {
-    boolean ? this.details.setAttribute('open', true) : this.details.removeAttribute('open')
+  toggle(open) {
+    open ? this.details.setAttribute('open', true) : this.details.removeAttribute('open')
   }
 }
 
