@@ -2,29 +2,16 @@
   "name": "@github/details-dialog-element",
   "version": "1.0.1",
   "description": "Custom dialog element to be used with &lt;details>",
+  "repository": "github/details-dialog-element",
   "main": "dist/index-umd.js",
-  "files": [
-    "dist"
-  ],
   "scripts": {
     "prepublishOnly": "npm run build",
     "test": "eslint index.js",
     "build": "BABEL_ENV=umd babel index.js -o dist/index-umd.js"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/github/details-dialog-element.git"
-  },
-  "keywords": [
-    "dialog",
-    "details"
-  ],
-  "author": "",
-  "bugs": {
-    "url": "https://github.com/github/details-dialog-element/issues"
-  },
-  "homepage": "https://github.com/github/details-dialog-element#readme",
+  "keywords": ["dialog", "details"],
   "license": "MIT",
+  "files": ["dist"],
   "publishConfig": {
     "registry": "https://npm.registry.github.com/"
   },
