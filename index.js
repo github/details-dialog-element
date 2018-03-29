@@ -1,12 +1,11 @@
-function createCloseButton(el) {
-  const closeButton = document.createElement('button')
-  closeButton.innerHTML = closeIcon()
-  closeButton.classList.add('dd-close-button')
-  closeButton.setAttribute('type', 'button')
-  closeButton.setAttribute('aria-label', 'Close dialog')
-  closeButton.setAttribute('data-close-dialog', true)
-  el.appendChild(closeButton)
-  return closeButton
+function createCloseButton() {
+  const button = document.createElement('button')
+  button.innerHTML = closeIcon()
+  button.classList.add('dd-close-button')
+  button.setAttribute('type', 'button')
+  button.setAttribute('aria-label', 'Close dialog')
+  button.setAttribute('data-close-dialog', true)
+  return button
 }
 
 function autofocus(el) {
@@ -63,7 +62,8 @@ function closeIcon() {
 
 class DetailsDialogElement extends HTMLElement {
   connectedCallback() {
-    this.closeButton = createCloseButton(this)
+    this.closeButton = createCloseButton()
+    this.appendChild(this.closeButton)
     this.details = this.parentElement
     this.setAttribute('role', 'dialog')
 
