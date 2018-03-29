@@ -1,13 +1,16 @@
 {
   "name": "@github/details-dialog-element",
   "version": "1.0.1",
-  "description": "Custom dialog element to be used with &lt;details>",
+  "description": "A modal dialog opened with a <details> button.",
   "repository": "github/details-dialog-element",
-  "main": "dist/index-umd.js",
+  "main": "dist/index.umd.js",
+  "module": "dist/index.esm.js",
   "scripts": {
     "prepublishOnly": "npm run build",
     "test": "eslint index.js",
-    "build": "BABEL_ENV=umd babel index.js -o dist/index-umd.js"
+    "build-umd": "BABEL_ENV=umd babel index.js -o dist/index.umd.js && cp index.js.flow dist/index.umd.js.flow",
+    "build-esm": "BABEL_ENV=esm babel index.js -o dist/index.esm.js && cp index.js.flow dist/index.esm.js.flow",
+    "build": "npm run build-umd && npm run build-esm"
   },
   "keywords": [
     "dialog",

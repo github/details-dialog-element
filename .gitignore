@@ -1,2 +1,5 @@
 node_modules
-dist/index-umd.js
+dist/index.umd.js
+dist/index.umd.js.flow
+dist/index.esm.js
+dist/index.esm.js.flow
