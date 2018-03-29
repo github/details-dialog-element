@@ -23,7 +23,7 @@ function captureDismissal(event) {
   }
 }
 
-function keyDownHelpers(event) {
+function keydown(event) {
   if (event.key === 'Escape') {
     event.currentTarget.open = false
   } else if (event.key === 'Tab') {
@@ -72,7 +72,7 @@ class DetailsDialogElement extends HTMLElement {
       function() {
         if (this.details.open) {
           autofocus(this)
-          this.details.addEventListener('keydown', keyDownHelpers)
+          this.details.addEventListener('keydown', keydown)
           this.addEventListener('click', captureDismissal)
         } else {
           for (const form of this.querySelectorAll('form')) {
@@ -82,7 +82,7 @@ class DetailsDialogElement extends HTMLElement {
           const summary = this.details.querySelector('summary')
           summary.focus()
 
-          this.details.removeEventListener('keydown', keyDownHelpers)
+          this.details.removeEventListener('keydown', keydown)
           this.removeEventListener('click', captureDismissal)
         }
       }.bind(this),
