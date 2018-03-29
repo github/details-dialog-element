@@ -35,9 +35,9 @@ function restrictTabBehavior(event) {
   event.preventDefault()
 
   const dialog = event.currentTarget
-  const elements = Array.from(dialog.querySelectorAll('a, input, button, textarea')).filter(function(element) {
-    return !element.disabled && element.offsetWidth > 0 && element.offsetHeight > 0
-  })
+  const elements = Array.from(dialog.querySelectorAll('a, input, button, textarea')).filter(
+    el => !el.disabled && !el.hidden && el.type !== 'hidden'
+  )
 
   const movement = event.shiftKey ? -1 : 1
   const currentFocus = elements.filter(el => el.matches(':focus'))[0]
