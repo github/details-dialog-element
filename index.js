@@ -96,6 +96,6 @@ class DetailsDialogElement extends HTMLElement {
 }
 
 if (!window.customElements.get('details-dialog')) {
-  window.HTMLDetailsDialogElement = DetailsDialogElement
+  window.DetailsDialogElement = DetailsDialogElement
   window.customElements.define('details-dialog', DetailsDialogElement)
 }
