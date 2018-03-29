@@ -31,13 +31,15 @@ function keydown(event) {
   }
 }
 
+function focusable(el) {
+  return !el.disabled && !el.hidden && el.type !== 'hidden'
+}
+
 function restrictTabBehavior(event) {
   event.preventDefault()
 
   const dialog = event.currentTarget
-  const elements = Array.from(dialog.querySelectorAll('a, input, button, textarea')).filter(
-    el => !el.disabled && !el.hidden && el.type !== 'hidden'
-  )
+  const elements = Array.from(dialog.querySelectorAll('a, input, button, textarea')).filter(focusable)
 
   const movement = event.shiftKey ? -1 : 1
   const currentFocus = elements.filter(el => el.matches(':focus'))[0]
