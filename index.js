@@ -77,6 +77,7 @@ const initialized = new WeakMap()
 class DetailsDialogElement extends HTMLElement {
   constructor() {
     super()
+    initialized.set(this, {rendered: false, details: null})
     this.addEventListener('click', event => {
       if (event.target.closest('[data-close-dialog]')) {
         event.target.closest('details').open = false
@@ -86,25 +87,27 @@ class DetailsDialogElement extends HTMLElement {
 
   connectedCallback() {
     this.setAttribute('role', 'dialog')
-    this.appendChild(createCloseButton())
+    const state = initialized.get(this)
+
+    if (!state.rendered) {
+      this.appendChild(createCloseButton())
+      state.rendered = true
+    }
 
     const details = this.parentElement
     details.addEventListener('toggle', toggle, {capture: true})
-    initialized.set(this, {details})
+    state.details = details
   }
 
   disconnectedCallback() {
     const state = initialized.get(this)
-    if (state) {
-      state.details.removeEventListener('toggle', toggle, {capture: true})
-      initialized.delete(this)
-    }
+    state.details.removeEventListener('toggle', toggle, {capture: true})
+    state.details = null
   }
 
   toggle(open) {
-    const state = initialized.get(this)
-    if (state) {
-      const {details} = state
+    const {details} = initialized.get(this)
+    if (details) {
       open ? details.setAttribute('open', true) : details.removeAttribute('open')
     }
   }
