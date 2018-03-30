@@ -79,13 +79,16 @@ function toggle(event) {
 }
 
 class DetailsDialogElement extends HTMLElement {
+  constructor() {
+    super()
+    this.addEventListener('click', captureDismissal)
+  }
+
   connectedCallback() {
     this.appendChild(createCloseButton())
 
     this.details = this.parentElement
     this.setAttribute('role', 'dialog')
-
-    this.addEventListener('click', captureDismissal)
     this.details.addEventListener('toggle', toggle, {capture: true})
   }
 
