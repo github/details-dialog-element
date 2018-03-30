@@ -72,6 +72,8 @@ function toggle(event) {
   }
 }
 
+const initialized = new WeakMap()
+
 class DetailsDialogElement extends HTMLElement {
   constructor() {
     super()
@@ -83,19 +85,28 @@ class DetailsDialogElement extends HTMLElement {
   }
 
   connectedCallback() {
+    this.setAttribute('role', 'dialog')
     this.appendChild(createCloseButton())
 
-    this.details = this.parentElement
-    this.setAttribute('role', 'dialog')
-    this.details.addEventListener('toggle', toggle, {capture: true})
+    const details = this.parentElement
+    details.addEventListener('toggle', toggle, {capture: true})
+    initialized.set(this, {details})
   }
 
   disconnectedCallback() {
-    this.details.removeEventListener('toggle', toggle, {capture: true})
+    const state = initialized.get(this)
+    if (state) {
+      state.details.removeEventListener('toggle', toggle, {capture: true})
+      initialized.delete(this)
+    }
   }
 
   toggle(open) {
-    open ? this.details.setAttribute('open', true) : this.details.removeAttribute('open')
+    const state = initialized.get(this)
+    if (state) {
+      const {details} = state
+      open ? details.setAttribute('open', true) : details.removeAttribute('open')
+    }
   }
 }
 
