@@ -17,12 +17,6 @@ function autofocus(el) {
   autofocus.focus()
 }
 
-function captureDismissal(event) {
-  if (event.target.closest('[data-close-dialog]')) {
-    event.target.closest('details').open = false
-  }
-}
-
 function keydown(event) {
   if (event.key === 'Escape') {
     event.currentTarget.open = false
@@ -81,7 +75,11 @@ function toggle(event) {
 class DetailsDialogElement extends HTMLElement {
   constructor() {
     super()
-    this.addEventListener('click', captureDismissal)
+    this.addEventListener('click', event => {
+      if (event.target.closest('[data-close-dialog]')) {
+        event.target.closest('details').open = false
+      }
+    })
   }
 
   connectedCallback() {
