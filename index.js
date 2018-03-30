@@ -18,7 +18,7 @@ function autofocus(el) {
 }
 
 function captureDismissal(event) {
-  if (event.target.hasAttribute('data-close-dialog') || event.target.closest('[data-close-dialog]')) {
+  if (event.target.closest('[data-close-dialog]')) {
     event.target.closest('details').open = false
   }
 }
