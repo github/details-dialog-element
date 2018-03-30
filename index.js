@@ -80,8 +80,7 @@ function toggle(event) {
 
 class DetailsDialogElement extends HTMLElement {
   connectedCallback() {
-    this.closeButton = createCloseButton()
-    this.appendChild(this.closeButton)
+    this.appendChild(createCloseButton())
 
     this.details = this.parentElement
     this.setAttribute('role', 'dialog')
