@@ -17,12 +17,6 @@ function autofocus(el) {
   autofocus.focus()
 }
 
-function captureDismissal(event) {
-  if (event.target.hasAttribute('data-close-dialog') || event.target.closest('[data-close-dialog]')) {
-    event.target.closest('details').open = false
-  }
-}
-
 function keydown(event) {
   if (event.key === 'Escape') {
     event.currentTarget.open = false
@@ -62,35 +56,60 @@ function closeIcon() {
   return '<svg version="1.1" width="12" height="16" viewBox="0 0 12 16" aria-hidden="true"><path d="M7.48 8l3.75 3.75-1.48 1.48L6 9.48l-3.75 3.75-1.48-1.48L4.52 8 .77 4.25l1.48-1.48L6 6.52l3.75-3.75 1.48 1.48z"/></svg>'
 }
 
-class DetailsDialogElement extends HTMLElement {
-  connectedCallback() {
-    this.closeButton = createCloseButton()
-    this.appendChild(this.closeButton)
-    this.details = this.parentElement
-    this.setAttribute('role', 'dialog')
+function toggle(event) {
+  const details = event.currentTarget
+  const dialog = details.querySelector('details-dialog')
 
-    this.details.addEventListener(
-      'toggle',
-      () => {
-        if (this.details.open) {
-          autofocus(this)
-          this.details.addEventListener('keydown', keydown)
-          this.addEventListener('click', captureDismissal)
-        } else {
-          for (const form of this.querySelectorAll('form')) {
-            form.reset()
-          }
-          this.details.querySelector('summary').focus()
-          this.details.removeEventListener('keydown', keydown)
-          this.removeEventListener('click', captureDismissal)
-        }
-      },
-      {capture: true}
-    )
+  if (details.open) {
+    autofocus(dialog)
+    details.addEventListener('keydown', keydown)
+  } else {
+    for (const form of dialog.querySelectorAll('form')) {
+      form.reset()
+    }
+    details.querySelector('summary').focus()
+    details.removeEventListener('keydown', keydown)
+  }
+}
+
+const initialized = new WeakMap()
+
+class DetailsDialogElement extends HTMLElement {
+  constructor() {
+    super()
+    initialized.set(this, {rendered: false, details: null})
+    this.addEventListener('click', event => {
+      if (event.target.closest('[data-close-dialog]')) {
+        event.target.closest('details').open = false
+      }
+    })
+  }
+
+  connectedCallback() {
+    this.setAttribute('role', 'dialog')
+    const state = initialized.get(this)
+
+    if (!state.rendered) {
+      this.appendChild(createCloseButton())
+      state.rendered = true
+    }
+
+    const details = this.parentElement
+    details.addEventListener('toggle', toggle, {capture: true})
+    state.details = details
+  }
+
+  disconnectedCallback() {
+    const state = initialized.get(this)
+    state.details.removeEventListener('toggle', toggle, {capture: true})
+    state.details = null
   }
 
   toggle(open) {
-    open ? this.details.setAttribute('open', true) : this.details.removeAttribute('open')
+    const {details} = initialized.get(this)
+    if (details) {
+      open ? details.setAttribute('open', true) : details.removeAttribute('open')
+    }
   }
 }
 
