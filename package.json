@@ -6,8 +6,9 @@
   "main": "dist/index.umd.js",
   "module": "dist/index.esm.js",
   "scripts": {
+    "clean": "rm -rf dist",
     "lint": "eslint index.js test/",
-    "prebuild": "npm run lint",
+    "prebuild": "npm run clean && npm run lint && mkdir dist",
     "build-umd": "BABEL_ENV=umd babel index.js -o dist/index.umd.js && cp index.js.flow dist/index.umd.js.flow",
     "build-esm": "BABEL_ENV=esm babel index.js -o dist/index.esm.js && cp index.js.flow dist/index.esm.js.flow",
     "build": "npm run build-umd && npm run build-esm",
@@ -21,7 +22,8 @@
   ],
   "license": "MIT",
   "files": [
-    "dist"
+    "dist",
+    "index.css"
   ],
   "publishConfig": {
     "registry": "https://npm.registry.github.com/"
