@@ -1,5 +1,5 @@
 {
-  "name": "@github/details-dialog-element",
+  "name": "details-dialog-element",
   "version": "1.0.1",
   "description": "A modal dialog opened with a <details> button.",
   "repository": "github/details-dialog-element",
@@ -25,9 +25,6 @@
     "dist",
     "index.css"
   ],
-  "publishConfig": {
-    "registry": "https://npm.registry.github.com/"
-  },
   "devDependencies": {
     "babel-cli": "^6.26.0",
     "babel-plugin-transform-custom-element-classes": "^0.1.0",
