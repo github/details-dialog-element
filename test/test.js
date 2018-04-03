@@ -52,5 +52,14 @@ describe('details-dialog-element', function() {
       close.click()
       assert(!details.open)
     })
+
+    it('renders a single close button', function() {
+      const details = document.querySelector('details')
+      const dialog = details.querySelector('details-dialog')
+      assert.equal(1, dialog.querySelectorAll('[data-close-dialog').length)
+      dialog.remove()
+      details.append(dialog)
+      assert.equal(1, dialog.querySelectorAll('[data-close-dialog').length)
+    })
   })
 })
