@@ -1,10 +1,13 @@
+const CLOSE_ATTR = 'data-close-dialog'
+const CLOSE_SELECTOR = `[${CLOSE_ATTR}]`
+
 function createCloseButton() {
   const button = document.createElement('button')
   button.innerHTML = closeIcon()
   button.classList.add('dd-close-button')
   button.setAttribute('type', 'button')
   button.setAttribute('aria-label', 'Close dialog')
-  button.setAttribute('data-close-dialog', true)
+  button.setAttribute(CLOSE_ATTR, true)
   return button
 }
 
@@ -75,11 +78,18 @@ function toggle(event) {
 const initialized = new WeakMap()
 
 class DetailsDialogElement extends HTMLElement {
+  static get CLOSE_ATTR() {
+    return CLOSE_ATTR
+  }
+  static get CLOSE_SELECTOR() {
+    return CLOSE_SELECTOR
+  }
+
   constructor() {
     super()
     initialized.set(this, {rendered: false, details: null})
     this.addEventListener('click', event => {
-      if (event.target.closest('[data-close-dialog]')) {
+      if (event.target.closest(CLOSE_SELECTOR)) {
         event.target.closest('details').open = false
       }
     })
@@ -90,7 +100,9 @@ class DetailsDialogElement extends HTMLElement {
     const state = initialized.get(this)
 
     if (!state.rendered) {
-      this.appendChild(createCloseButton())
+      if (!this.querySelector(CLOSE_SELECTOR)) {
+        this.appendChild(createCloseButton())
+      }
       state.rendered = true
     }
 
@@ -112,6 +124,8 @@ class DetailsDialogElement extends HTMLElement {
     }
   }
 }
+
+export default DetailsDialogElement
 
 if (!window.customElements.get('details-dialog')) {
   window.DetailsDialogElement = DetailsDialogElement
