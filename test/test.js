@@ -62,4 +62,33 @@ describe('details-dialog-element', function() {
       assert.equal(1, dialog.querySelectorAll('[data-close-dialog').length)
     })
   })
+
+  describe('custom close button', function() {
+    let customButton
+
+    beforeEach(function() {
+      const container = document.createElement('div')
+      container.innerHTML = `
+      <details>
+        <summary>Click</summary>
+        <details-dialog>
+          <p>Hello</p>
+          <button data-close-dialog>Say goodbye</button>
+        </details-dialog>
+      </details>`
+      customButton = container.querySelector('[data-close-dialog]')
+      document.body.append(container)
+    })
+
+    afterEach(function() {
+      document.body.innerHTML = ''
+    })
+
+    it('creates a close button', function() {
+      const buttons = document.querySelectorAll('[data-close-dialog]')
+      const [firstButton] = buttons
+      assert.equal(buttons.length, 1, `More than one button (${buttons.length})`)
+      assert.strictEqual(firstButton, customButton, `Wrong button: ${firstButton.outerHTML}`)
+    })
+  })
 })
