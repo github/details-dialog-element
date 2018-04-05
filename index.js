@@ -1,15 +1,6 @@
 const CLOSE_ATTR = 'data-close-dialog'
 const CLOSE_SELECTOR = `[${CLOSE_ATTR}]`
-
-function createCloseButton() {
-  const button = document.createElement('button')
-  button.innerHTML = closeIcon()
-  button.classList.add('dd-close-button')
-  button.setAttribute('type', 'button')
-  button.setAttribute('aria-label', 'Close dialog')
-  button.setAttribute(CLOSE_ATTR, true)
-  return button
-}
+const INPUT_SELECTOR = 'a, input, button, textarea'
 
 function autofocus(el) {
   let autofocus = el.querySelector('[autofocus]')
@@ -36,7 +27,7 @@ function restrictTabBehavior(event) {
   event.preventDefault()
 
   const dialog = event.currentTarget
-  const elements = Array.from(dialog.querySelectorAll('a, input, button, textarea')).filter(focusable)
+  const elements = Array.from(dialog.querySelectorAll(INPUT_SELECTOR)).filter(focusable)
 
   const movement = event.shiftKey ? -1 : 1
   const currentFocus = elements.filter(el => el.matches(':focus'))[0]
@@ -51,12 +42,6 @@ function restrictTabBehavior(event) {
   }
 
   elements[targetIndex].focus()
-}
-
-// Pulled from https://github.com/primer/octicons
-// We're only using one octicon so it doesn't make sense to include the whole module
-function closeIcon() {
-  return '<svg version="1.1" width="12" height="16" viewBox="0 0 12 16" aria-hidden="true"><path d="M7.48 8l3.75 3.75-1.48 1.48L6 9.48l-3.75 3.75-1.48-1.48L4.52 8 .77 4.25l1.48-1.48L6 6.52l3.75-3.75 1.48 1.48z"/></svg>'
 }
 
 function toggle(event) {
@@ -84,10 +69,13 @@ class DetailsDialogElement extends HTMLElement {
   static get CLOSE_SELECTOR() {
     return CLOSE_SELECTOR
   }
+  static get INPUT_SELECTOR() {
+    return INPUT_SELECTOR
+  }
 
   constructor() {
     super()
-    initialized.set(this, {rendered: false, details: null})
+    initialized.set(this, {details: null})
     this.addEventListener('click', event => {
       if (event.target.closest(CLOSE_SELECTOR)) {
         event.target.closest('details').open = false
@@ -98,14 +86,6 @@ class DetailsDialogElement extends HTMLElement {
   connectedCallback() {
     this.setAttribute('role', 'dialog')
     const state = initialized.get(this)
-
-    if (!state.rendered) {
-      if (!this.querySelector(CLOSE_SELECTOR)) {
-        this.appendChild(createCloseButton())
-      }
-      state.rendered = true
-    }
-
     const details = this.parentElement
     details.addEventListener('toggle', toggle, {capture: true})
     state.details = details
