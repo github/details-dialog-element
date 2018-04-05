@@ -52,44 +52,5 @@ describe('details-dialog-element', function() {
       close.click()
       assert(!details.open)
     })
-
-    xit('renders a single close button', function() {
-      const details = document.querySelector('details')
-      const dialog = details.querySelector('details-dialog')
-      assert.equal(1, dialog.querySelectorAll(CLOSE_SELECTOR).length)
-      dialog.remove()
-      details.append(dialog)
-      assert.equal(1, dialog.querySelectorAll(CLOSE_SELECTOR).length)
-    })
-  })
-
-  xdescribe('custom close button', function() {
-    let customButton
-
-    beforeEach(function() {
-      const container = document.createElement('div')
-      container.innerHTML = `
-        <details>
-          <summary>Click</summary>
-          <details-dialog>
-            <p>Hello</p>
-            <button ${CLOSE_ATTR}>Say goodbye</button>
-          </details-dialog>
-        </details>
-      `
-      customButton = container.querySelector(CLOSE_SELECTOR)
-      document.body.append(container)
-    })
-
-    afterEach(function() {
-      document.body.innerHTML = ''
-    })
-
-    it('creates a close button', function() {
-      const buttons = document.querySelectorAll(CLOSE_SELECTOR)
-      const [firstButton] = buttons
-      assert.equal(buttons.length, 1, `More than one button (${buttons.length})`)
-      assert.strictEqual(firstButton, customButton, `Wrong button: ${firstButton.outerHTML}`)
-    })
   })
 })
