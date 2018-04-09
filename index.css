@@ -9,13 +9,3 @@ details-dialog {
   max-height: 80vh;
   width: 448px;
 }
-
-details-dialog .dd-close-button {
-  background: none;
-  position: absolute;
-  right: 0;
-  top: 0;
-  padding: 20px;
-  border: 0;
-  line-height: 0;
-}

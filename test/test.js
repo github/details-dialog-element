@@ -1,3 +1,5 @@
+const {CLOSE_ATTR, CLOSE_SELECTOR} = window.DetailsDialogElement
+
 describe('details-dialog-element', function() {
   describe('element creation', function() {
     it('creates from document.createElement', function() {
@@ -15,21 +17,19 @@ describe('details-dialog-element', function() {
     beforeEach(function() {
       const container = document.createElement('div')
       container.innerHTML = `
-      <details>
-        <summary>Click</summary>
-        <details-dialog>
-          <p>Hello</p>
-        </details-dialog>
-      </details>`
+        <details>
+          <summary>Click</summary>
+          <details-dialog>
+            <p>Hello</p>
+            <button ${CLOSE_ATTR}>Goodbye</button>
+          </details-dialog>
+        </details>
+      `
       document.body.append(container)
     })
 
     afterEach(function() {
       document.body.innerHTML = ''
-    })
-
-    it('creates a close button', function() {
-      assert(document.querySelector('details-dialog button[data-close-dialog]'))
     })
 
     it('toggles open', function() {
@@ -45,21 +45,12 @@ describe('details-dialog-element', function() {
     it('closes with close button', function() {
       const details = document.querySelector('details')
       const dialog = details.querySelector('details-dialog')
-      const close = dialog.querySelector('[data-close-dialog')
+      const close = dialog.querySelector(CLOSE_SELECTOR)
       assert(!details.open)
       dialog.toggle(true)
       assert(details.open)
       close.click()
       assert(!details.open)
-    })
-
-    it('renders a single close button', function() {
-      const details = document.querySelector('details')
-      const dialog = details.querySelector('details-dialog')
-      assert.equal(1, dialog.querySelectorAll('[data-close-dialog').length)
-      dialog.remove()
-      details.append(dialog)
-      assert.equal(1, dialog.querySelectorAll('[data-close-dialog').length)
     })
   })
 })
