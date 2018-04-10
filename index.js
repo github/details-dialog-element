@@ -87,13 +87,13 @@ class DetailsDialogElement extends HTMLElement {
     this.setAttribute('role', 'dialog')
     const state = initialized.get(this)
     const details = this.parentElement
-    details.addEventListener('toggle', toggle, {capture: true})
+    details.addEventListener('toggle', toggle)
     state.details = details
   }
 
   disconnectedCallback() {
     const state = initialized.get(this)
-    state.details.removeEventListener('toggle', toggle, {capture: true})
+    state.details.removeEventListener('toggle', toggle)
     state.details = null
   }
 
