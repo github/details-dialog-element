@@ -17,7 +17,10 @@ import 'details-dialog-element'
 ```html
 <details>
   <summary>Open dialog</summary>
-  <details-dialog>Modal content</details-dialog>
+  <details-dialog>
+    Modal content
+    <button type="button" data-close-dialog>Close</button>
+  </details-dialog>
 </details>
 ```
 
