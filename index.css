@@ -7,5 +7,6 @@ details-dialog {
   transform: translateX(-50%);
   z-index: 999;
   max-height: 80vh;
+  max-width: 90vw;
   width: 448px;
 }
