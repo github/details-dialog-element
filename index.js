@@ -1,6 +1,6 @@
 const CLOSE_ATTR = 'data-close-dialog'
 const CLOSE_SELECTOR = `[${CLOSE_ATTR}]`
-const INPUT_SELECTOR = 'a, input, button, textarea'
+const INPUT_SELECTOR = 'a, input, button, textarea, select, summary'
 
 function autofocus(el) {
   let autofocus = el.querySelector('[autofocus]')
