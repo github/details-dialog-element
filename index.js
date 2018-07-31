@@ -24,9 +24,10 @@ function focusable(el) {
 }
 
 function restrictTabBehavior(event) {
+  const dialog = event.currentTarget.querySelector('details-dialog')
+  if (!dialog) return
   event.preventDefault()
 
-  const dialog = event.currentTarget
   const elements = Array.from(dialog.querySelectorAll(INPUT_SELECTOR)).filter(focusable)
 
   const movement = event.shiftKey ? -1 : 1
