@@ -88,6 +88,11 @@ class DetailsDialogElement extends HTMLElement {
     this.setAttribute('role', 'dialog')
     const state = initialized.get(this)
     const details = this.parentElement
+    if (!details) return
+
+    const summary = details.querySelector('summary')
+    if (summary) summary.setAttribute('aria-haspopup', 'dialog')
+
     details.addEventListener('toggle', toggle)
     state.details = details
   }
