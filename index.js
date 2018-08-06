@@ -14,6 +14,7 @@ function autofocus(el) {
 function keydown(event) {
   if (event.key === 'Escape') {
     event.currentTarget.open = false
+    event.stopPropagation()
   } else if (event.key === 'Tab') {
     restrictTabBehavior(event)
   }
