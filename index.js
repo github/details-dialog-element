@@ -51,13 +51,18 @@ function toggle(event) {
   const dialog = details.querySelector('details-dialog')
 
   if (details.open) {
+    if (document.activeElement) {
+      initialized.set(dialog, {details, activeElement: document.activeElement})
+    }
+
     autofocus(dialog)
     details.addEventListener('keydown', keydown)
   } else {
     for (const form of dialog.querySelectorAll('form')) {
       form.reset()
     }
-    details.querySelector('summary').focus()
+    const {activeElement} = initialized.get(dialog)
+    if (activeElement) activeElement.focus()
     details.removeEventListener('keydown', keydown)
   }
 }
