@@ -14,6 +14,7 @@ function autofocus(el) {
 function keydown(event) {
   if (event.key === 'Escape') {
     event.currentTarget.open = false
+    event.stopPropagation()
   } else if (event.key === 'Tab') {
     restrictTabBehavior(event)
   }
@@ -50,13 +51,19 @@ function toggle(event) {
   const dialog = details.querySelector('details-dialog')
 
   if (details.open) {
+    if (document.activeElement) {
+      initialized.set(dialog, {details, activeElement: document.activeElement})
+    }
+
     autofocus(dialog)
     details.addEventListener('keydown', keydown)
   } else {
     for (const form of dialog.querySelectorAll('form')) {
       form.reset()
     }
-    details.querySelector('summary').focus()
+    const {activeElement} = initialized.get(dialog)
+    const focusElement = activeElement === document.body ? details.querySelector('summary') : activeElement
+    if (focusElement) focusElement.focus()
     details.removeEventListener('keydown', keydown)
   }
 }
