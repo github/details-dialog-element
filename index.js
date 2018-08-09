@@ -61,8 +61,8 @@ function toggle(event) {
     for (const form of dialog.querySelectorAll('form')) {
       form.reset()
     }
-    const activeElement = initialized.get(dialog).activeElement || details.querySelector('summary') || document.body
-    activeElement.focus()
+    const activeElement = initialized.get(dialog).activeElement || details.querySelector('summary')
+    if (activeElement) activeElement.focus()
     details.removeEventListener('keydown', keydown)
   }
 }
