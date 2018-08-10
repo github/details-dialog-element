@@ -1,8 +1,10 @@
+/* @flow strict */
+
 const CLOSE_ATTR = 'data-close-dialog'
 const CLOSE_SELECTOR = `[${CLOSE_ATTR}]`
 const INPUT_SELECTOR = 'a, input, button, textarea, select, summary'
 
-function autofocus(el) {
+function autofocus(el: DetailsDialogElement) {
   let autofocus = el.querySelector('[autofocus]')
   if (!autofocus) {
     autofocus = el
@@ -11,25 +13,26 @@ function autofocus(el) {
   autofocus.focus()
 }
 
-function keydown(event) {
+function keydown(event: KeyboardEvent) {
   if (event.key === 'Escape') {
-    event.currentTarget.open = false
+    ;(event.currentTarget: any).open = false
     event.stopPropagation()
   } else if (event.key === 'Tab') {
     restrictTabBehavior(event)
   }
 }
 
-function focusable(el) {
+function focusable(el: any): boolean {
   return !el.disabled && !el.hidden && el.type !== 'hidden'
 }
 
-function restrictTabBehavior(event) {
+function restrictTabBehavior(event: KeyboardEvent) {
+  if (!(event.currentTarget instanceof Element)) return
   const dialog = event.currentTarget.querySelector('details-dialog')
   if (!dialog) return
   event.preventDefault()
 
-  const elements = Array.from(dialog.querySelectorAll(INPUT_SELECTOR)).filter(focusable)
+  const elements: Array<Element> = Array.from(dialog.querySelectorAll(INPUT_SELECTOR)).filter(focusable)
 
   const movement = event.shiftKey ? -1 : 1
   const currentFocus = elements.filter(el => el.matches(':focus'))[0]
@@ -43,11 +46,11 @@ function restrictTabBehavior(event) {
     }
   }
 
-  elements[targetIndex].focus()
+  ;(elements[targetIndex]: any).focus()
 }
 
-function toggle(event) {
-  const details = event.currentTarget
+function toggle(event: Event) {
+  const details: any = event.currentTarget
   const dialog = details.querySelector('details-dialog')
 
   if (details.open) {
@@ -61,14 +64,22 @@ function toggle(event) {
     for (const form of dialog.querySelectorAll('form')) {
       form.reset()
     }
-    const {activeElement} = initialized.get(dialog)
-    const focusElement = activeElement === document.body ? details.querySelector('summary') : activeElement
+    const state = initialized.get(dialog)
+    const focusElement: any =
+      state && state.activeElement && state.activeElement !== document.body
+        ? state.activeElement
+        : details.querySelector('summary')
     if (focusElement) focusElement.focus()
     details.removeEventListener('keydown', keydown)
   }
 }
 
-const initialized = new WeakMap()
+type State = {|
+  details: ?Element,
+  activeElement: ?Element
+|}
+
+const initialized: WeakMap<Element, State> = new WeakMap()
 
 class DetailsDialogElement extends HTMLElement {
   static get CLOSE_ATTR() {
@@ -83,10 +94,11 @@ class DetailsDialogElement extends HTMLElement {
 
   constructor() {
     super()
-    initialized.set(this, {details: null})
-    this.addEventListener('click', event => {
-      if (event.target.closest(CLOSE_SELECTOR)) {
-        event.target.closest('details').open = false
+    initialized.set(this, {details: null, activeElement: null})
+    this.addEventListener('click', function({target}: Event) {
+      if (!(target instanceof Element)) return
+      if (target.closest(CLOSE_SELECTOR)) {
+        ;(target.closest('details'): any).open = false
       }
     })
   }
@@ -94,6 +106,7 @@ class DetailsDialogElement extends HTMLElement {
   connectedCallback() {
     this.setAttribute('role', 'dialog')
     const state = initialized.get(this)
+    if (!state) return
     const details = this.parentElement
     if (!details) return
 
@@ -106,15 +119,17 @@ class DetailsDialogElement extends HTMLElement {
 
   disconnectedCallback() {
     const state = initialized.get(this)
+    if (!state || !state.details) return
     state.details.removeEventListener('toggle', toggle)
     state.details = null
   }
 
-  toggle(open) {
-    const {details} = initialized.get(this)
-    if (details) {
-      open ? details.setAttribute('open', true) : details.removeAttribute('open')
-    }
+  toggle(open: boolean) {
+    const state = initialized.get(this)
+    if (!state) return
+    const {details} = state
+    if (!details) return
+    ;(details: any).open = open
   }
 }
 
