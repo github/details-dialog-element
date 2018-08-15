@@ -4,6 +4,14 @@ const CLOSE_ATTR = 'data-close-dialog'
 const CLOSE_SELECTOR = `[${CLOSE_ATTR}]`
 const INPUT_SELECTOR = 'a, input, button, textarea, select, summary'
 
+type Focusable =
+  | HTMLButtonElement
+  | HTMLInputElement
+  | HTMLAnchorElement
+  | HTMLTextAreaElement
+  | HTMLSelectElement
+  | HTMLElement
+
 function autofocus(el: DetailsDialogElement) {
   let autofocus = el.querySelector('[autofocus]')
   if (!autofocus) {
@@ -14,16 +22,18 @@ function autofocus(el: DetailsDialogElement) {
 }
 
 function keydown(event: KeyboardEvent) {
+  const details = event.currentTarget
+  if (!(details instanceof Element)) return
   if (event.key === 'Escape') {
-    ;(event.currentTarget: any).open = false
+    details.removeAttribute('open')
     event.stopPropagation()
   } else if (event.key === 'Tab') {
     restrictTabBehavior(event)
   }
 }
 
-function focusable(el: any): boolean {
-  return !el.disabled && !el.hidden && el.type !== 'hidden'
+function focusable(el: Focusable): boolean {
+  return !el.disabled && !el.hidden && (!el.type || el.type !== 'hidden')
 }
 
 function restrictTabBehavior(event: KeyboardEvent) {
@@ -32,7 +42,7 @@ function restrictTabBehavior(event: KeyboardEvent) {
   if (!dialog) return
   event.preventDefault()
 
-  const elements: Array<Element> = Array.from(dialog.querySelectorAll(INPUT_SELECTOR)).filter(focusable)
+  const elements: Array<Focusable> = Array.from(dialog.querySelectorAll(INPUT_SELECTOR)).filter(focusable)
 
   const movement = event.shiftKey ? -1 : 1
   const currentFocus = elements.filter(el => el.matches(':focus'))[0]
@@ -46,14 +56,16 @@ function restrictTabBehavior(event: KeyboardEvent) {
     }
   }
 
-  ;(elements[targetIndex]: any).focus()
+  elements[targetIndex].focus()
 }
 
 function toggle(event: Event) {
-  const details: any = event.currentTarget
+  const details = event.currentTarget
+  if (!(details instanceof Element)) return
   const dialog = details.querySelector('details-dialog')
+  if (!(dialog instanceof DetailsDialogElement)) return
 
-  if (details.open) {
+  if (details.hasAttribute('open')) {
     if (document.activeElement) {
       initialized.set(dialog, {details, activeElement: document.activeElement})
     }
@@ -62,11 +74,11 @@ function toggle(event: Event) {
     details.addEventListener('keydown', keydown)
   } else {
     for (const form of dialog.querySelectorAll('form')) {
-      form.reset()
+      if (form instanceof HTMLFormElement) form.reset()
     }
     const state = initialized.get(dialog)
-    const focusElement: any =
-      state && state.activeElement && state.activeElement !== document.body
+    const focusElement: ?HTMLElement =
+      state && state.activeElement instanceof HTMLElement && state.activeElement !== document.body
         ? state.activeElement
         : details.querySelector('summary')
     if (focusElement) focusElement.focus()
@@ -97,8 +109,9 @@ class DetailsDialogElement extends HTMLElement {
     initialized.set(this, {details: null, activeElement: null})
     this.addEventListener('click', function({target}: Event) {
       if (!(target instanceof Element)) return
-      if (target.closest(CLOSE_SELECTOR)) {
-        ;(target.closest('details'): any).open = false
+      const details = target.closest('details')
+      if (details && target.closest(CLOSE_SELECTOR)) {
+        details.removeAttribute('open')
       }
     })
   }
@@ -129,7 +142,7 @@ class DetailsDialogElement extends HTMLElement {
     if (!state) return
     const {details} = state
     if (!details) return
-    ;(details: any).open = open
+    open ? details.setAttribute('open', 'open') : details.removeAttribute('open')
   }
 }
 
