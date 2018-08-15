@@ -76,13 +76,18 @@ function toggle(event: Event): void {
     for (const form of dialog.querySelectorAll('form')) {
       if (form instanceof HTMLFormElement) form.reset()
     }
-    const state = initialized.get(dialog)
-    const focusElement: ?HTMLElement =
-      state && state.activeElement instanceof HTMLElement && state.activeElement !== document.body
-        ? state.activeElement
-        : details.querySelector('summary')
+    const focusElement = findFocusElement(details, dialog)
     if (focusElement) focusElement.focus()
     details.removeEventListener('keydown', keydown)
+  }
+}
+
+function findFocusElement(details, dialog): ?HTMLElement {
+  const state = initialized.get(dialog)
+  if (state && state.activeElement instanceof HTMLElement && state.activeElement !== document.body) {
+    return state.activeElement
+  } else {
+    return details.querySelector('summary')
   }
 }
 
