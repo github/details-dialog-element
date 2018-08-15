@@ -12,7 +12,7 @@ type Focusable =
   | HTMLSelectElement
   | HTMLElement
 
-function autofocus(el: DetailsDialogElement) {
+function autofocus(el: DetailsDialogElement): void {
   let autofocus = el.querySelector('[autofocus]')
   if (!autofocus) {
     autofocus = el
@@ -21,7 +21,7 @@ function autofocus(el: DetailsDialogElement) {
   autofocus.focus()
 }
 
-function keydown(event: KeyboardEvent) {
+function keydown(event: KeyboardEvent): void {
   const details = event.currentTarget
   if (!(details instanceof Element)) return
   if (event.key === 'Escape') {
@@ -36,7 +36,7 @@ function focusable(el: Focusable): boolean {
   return !el.disabled && !el.hidden && (!el.type || el.type !== 'hidden')
 }
 
-function restrictTabBehavior(event: KeyboardEvent) {
+function restrictTabBehavior(event: KeyboardEvent): void {
   if (!(event.currentTarget instanceof Element)) return
   const dialog = event.currentTarget.querySelector('details-dialog')
   if (!dialog) return
@@ -59,7 +59,7 @@ function restrictTabBehavior(event: KeyboardEvent) {
   elements[targetIndex].focus()
 }
 
-function toggle(event: Event) {
+function toggle(event: Event): void {
   const details = event.currentTarget
   if (!(details instanceof Element)) return
   const dialog = details.querySelector('details-dialog')
@@ -137,7 +137,7 @@ class DetailsDialogElement extends HTMLElement {
     state.details = null
   }
 
-  toggle(open: boolean) {
+  toggle(open: boolean): void {
     const state = initialized.get(this)
     if (!state) return
     const {details} = state
