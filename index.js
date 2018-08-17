@@ -84,7 +84,7 @@ function toggle(event: Event): void {
 
 function findFocusElement(details, dialog): ?HTMLElement {
   const state = initialized.get(dialog)
-  if (state && state.activeElement instanceof HTMLElement && state.activeElement !== document.body) {
+  if (state && state.activeElement instanceof HTMLElement) {
     return state.activeElement
   } else {
     return details.querySelector('summary')
