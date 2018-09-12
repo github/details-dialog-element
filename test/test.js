@@ -52,5 +52,86 @@ describe('details-dialog-element', function() {
       close.click()
       assert(!details.open)
     })
+
+    it('closes when summary is clicked', function() {
+      const details = document.querySelector('details')
+      const summary = document.querySelector('summary')
+      const dialog = details.querySelector('details-dialog')
+      assert(!details.open)
+      dialog.toggle(true)
+      assert(details.open)
+      summary.click()
+      assert(!details.open)
+    })
+
+    it('closes when escape key is pressed', async function() {
+      const details = document.querySelector('details')
+      const dialog = details.querySelector('details-dialog')
+      assert(!details.open)
+      dialog.toggle(true)
+      await waitForToggleEvent(details)
+      assert(details.open)
+      const escapeEvent = document.createEvent('Event')
+      escapeEvent.initEvent('keydown', true, true)
+      escapeEvent.key = 'Escape'
+      details.dispatchEvent(escapeEvent)
+      assert(!details.open)
+    })
+
+    it('supports canceling requests to close the dialog', async function() {
+      const details = document.querySelector('details')
+      const summary = document.querySelector('summary')
+      const dialog = details.querySelector('details-dialog')
+      const close = dialog.querySelector(CLOSE_SELECTOR)
+
+      dialog.toggle(true)
+      await waitForToggleEvent(details)
+      assert(details.open)
+
+      let closeRequestCount = 0
+      let allowCloseToHappen = false
+      summary.addEventListener(
+        'click',
+        function(event) {
+          closeRequestCount++
+          if (!allowCloseToHappen) {
+            event.preventDefault()
+            event.stopPropagation()
+          }
+        },
+        {capture: true}
+      )
+
+      close.click()
+      assert(details.open)
+      assert.equal(1, closeRequestCount)
+
+      summary.click()
+      assert(details.open)
+      assert.equal(2, closeRequestCount)
+
+      const escapeEvent = document.createEvent('Event')
+      escapeEvent.initEvent('keydown', true, true)
+      escapeEvent.key = 'Escape'
+      details.dispatchEvent(escapeEvent)
+      assert(details.open)
+      assert.equal(3, closeRequestCount)
+
+      allowCloseToHappen = true
+      close.click()
+      assert(!details.open)
+    })
   })
 })
+
+function waitForToggleEvent(details) {
+  return new Promise(function(resolve) {
+    details.addEventListener(
+      'toggle',
+      function() {
+        resolve()
+      },
+      {once: true}
+    )
+  })
+}
