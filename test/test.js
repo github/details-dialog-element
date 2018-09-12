@@ -71,10 +71,7 @@ describe('details-dialog-element', function() {
       dialog.toggle(true)
       await waitForToggleEvent(details)
       assert(details.open)
-      const escapeEvent = document.createEvent('Event')
-      escapeEvent.initEvent('keydown', true, true)
-      escapeEvent.key = 'Escape'
-      details.dispatchEvent(escapeEvent)
+      pressEscape(details)
       assert(!details.open)
     })
 
@@ -104,18 +101,19 @@ describe('details-dialog-element', function() {
 
       close.click()
       assert(details.open)
-      assert.equal(1, closeRequestCount)
+      assert.equal(closeRequestCount, 1)
 
       summary.click()
       assert(details.open)
-      assert.equal(2, closeRequestCount)
+      assert.equal(closeRequestCount, 2)
 
-      const escapeEvent = document.createEvent('Event')
-      escapeEvent.initEvent('keydown', true, true)
-      escapeEvent.key = 'Escape'
-      details.dispatchEvent(escapeEvent)
+      pressEscape(details)
       assert(details.open)
-      assert.equal(3, closeRequestCount)
+      assert.equal(closeRequestCount, 3)
+
+      dialog.toggle(false)
+      assert(details.open)
+      assert.equal(closeRequestCount, 4)
 
       allowCloseToHappen = true
       close.click()
@@ -134,4 +132,11 @@ function waitForToggleEvent(details) {
       {once: true}
     )
   })
+}
+
+function pressEscape(details) {
+  const escapeEvent = document.createEvent('Event')
+  escapeEvent.initEvent('keydown', true, true)
+  escapeEvent.key = 'Escape'
+  details.dispatchEvent(escapeEvent)
 }
