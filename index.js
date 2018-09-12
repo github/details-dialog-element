@@ -82,7 +82,7 @@ function toggle(event: Event): void {
   }
 }
 
-function findFocusElement(details, dialog): ?HTMLElement {
+function findFocusElement(details: Element, dialog: DetailsDialogElement): ?HTMLElement {
   const state = initialized.get(dialog)
   if (state && state.activeElement instanceof HTMLElement) {
     return state.activeElement
@@ -91,7 +91,7 @@ function findFocusElement(details, dialog): ?HTMLElement {
   }
 }
 
-function toggleDetails(details, open) {
+function toggleDetails(details: Element, open: boolean) {
   // Don't update unless state is changing
   if (open === details.hasAttribute('open')) return
 
