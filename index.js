@@ -59,22 +59,25 @@ function restrictTabBehavior(event: KeyboardEvent): void {
   elements[targetIndex].focus()
 }
 
+function allowClosingDialog(details: Element): boolean {
+  const dialog = details.querySelector('details-dialog')
+  if (!(dialog instanceof DetailsDialogElement)) return true
+
+  return dialog.dispatchEvent(
+    new CustomEvent('details-dialog:will-close', {
+      bubbles: true,
+      cancelable: true
+    })
+  )
+}
+
 function onSummaryClick(event: MouseEvent) {
   if (!(event.currentTarget instanceof Element)) return
 
   const details = event.currentTarget.closest('details[open]')
   if (!details) return
 
-  const dialog = details.querySelector('details-dialog')
-  if (!dialog) return
-
-  const preventSummaryClick = !dialog.dispatchEvent(
-    new CustomEvent('details-dialog:will-close', {
-      bubbles: true,
-      cancelable: true
-    })
-  )
-
+  const preventSummaryClick = !allowClosingDialog(details)
   if (preventSummaryClick) {
     event.preventDefault()
     event.stopPropagation()
@@ -117,11 +120,10 @@ function toggleDetails(details: Element, open: boolean) {
   // Don't update unless state is changing
   if (open === details.hasAttribute('open')) return
 
-  const summary = details.querySelector('summary')
-  if (summary) {
-    summary.click()
-  } else {
-    open ? details.setAttribute('open', '') : details.removeAttribute('open')
+  if (open) {
+    details.setAttribute('open', '')
+  } else if (allowClosingDialog(details)) {
+    details.removeAttribute('open')
   }
 }
 

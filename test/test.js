@@ -120,6 +120,42 @@ describe('details-dialog-element', function() {
         summary.remove()
       })
 
+      it('supports a cancellable details-dialog:will-close event', async function() {
+        dialog.toggle(true)
+        await waitForToggleEvent(details)
+        assert(details.open)
+
+        let closeRequestCount = 0
+        let allowCloseToHappen = false
+        dialog.addEventListener(
+          'details-dialog:will-close',
+          function(event) {
+            closeRequestCount++
+            if (!allowCloseToHappen) {
+              event.preventDefault()
+              event.stopPropagation()
+            }
+          },
+          {capture: true}
+        )
+
+        close.click()
+        assert(details.open)
+        assert.equal(closeRequestCount, 1)
+
+        pressEscape(details)
+        assert(details.open)
+        assert.equal(closeRequestCount, 2)
+
+        dialog.toggle(false)
+        assert(details.open)
+        assert.equal(closeRequestCount, 3)
+
+        allowCloseToHappen = true
+        close.click()
+        assert(!details.open)
+      })
+
       it('toggles open', function() {
         assert(!details.open)
         dialog.toggle(true)
