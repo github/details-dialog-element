@@ -36,7 +36,7 @@ This event can be cancelled to keep the dialog open.
 
 ```js
 document.addEventListener('details-dialog:will-close', function(event) {
-  if (!confirm("Are you sure?")) {
+  if (!confirm('Are you sure?')) {
     event.preventDefault()
   }
 })
