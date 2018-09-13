@@ -177,8 +177,8 @@ class DetailsDialogElement extends HTMLElement {
     if (!state) return
     const {details} = state
     if (!details) return
-    const summary = details.querySelector('summary')
     details.removeEventListener('toggle', toggle)
+    const summary = details.querySelector('summary')
     if (summary) {
       summary.removeEventListener('click', onSummaryClick, {capture: true})
     }
