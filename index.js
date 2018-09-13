@@ -71,7 +71,7 @@ function allowClosingDialog(details: Element): boolean {
   )
 }
 
-function onSummaryClick(event: MouseEvent) {
+function onSummaryClick(event: Event) {
   if (!(event.currentTarget instanceof Element)) return
 
   const details = event.currentTarget.closest('details[open]')
