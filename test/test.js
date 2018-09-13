@@ -75,15 +75,15 @@ describe('details-dialog-element', function() {
       assert(!details.open)
     })
 
-    it('supports canceling requests to close the dialog when a summary element is present', async function() {
+    it('supports a cancellable details-dialog:will-close event when a summary element is present', async function() {
       dialog.toggle(true)
       await waitForToggleEvent(details)
       assert(details.open)
 
       let closeRequestCount = 0
       let allowCloseToHappen = false
-      summary.addEventListener(
-        'click',
+      dialog.addEventListener(
+        'details-dialog:will-close',
         function(event) {
           closeRequestCount++
           if (!allowCloseToHappen) {

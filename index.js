@@ -59,6 +59,28 @@ function restrictTabBehavior(event: KeyboardEvent): void {
   elements[targetIndex].focus()
 }
 
+function onSummaryClick(event: MouseEvent) {
+  if (!(event.currentTarget instanceof Element)) return
+
+  const details = event.currentTarget.closest('details[open]')
+  if (!details) return
+
+  const dialog = details.querySelector('details-dialog')
+  if (!dialog) return
+
+  const preventSummaryClick = !dialog.dispatchEvent(
+    new CustomEvent('details-dialog:will-close', {
+      bubbles: true,
+      cancelable: true
+    })
+  )
+
+  if (preventSummaryClick) {
+    event.preventDefault()
+    event.stopPropagation()
+  }
+}
+
 function toggle(event: Event): void {
   const details = event.currentTarget
   if (!(details instanceof Element)) return
@@ -97,8 +119,6 @@ function toggleDetails(details: Element, open: boolean) {
 
   const summary = details.querySelector('summary')
   if (summary) {
-    // Toggle via clicking summary so it can be canceled by listeners wanting
-    // to prevent the toggle
     summary.click()
   } else {
     open ? details.setAttribute('open', '') : details.removeAttribute('open')
@@ -143,7 +163,10 @@ class DetailsDialogElement extends HTMLElement {
     if (!details) return
 
     const summary = details.querySelector('summary')
-    if (summary) summary.setAttribute('aria-haspopup', 'dialog')
+    if (summary) {
+      summary.setAttribute('aria-haspopup', 'dialog')
+      summary.addEventListener('click', onSummaryClick, {capture: true})
+    }
 
     details.addEventListener('toggle', toggle)
     state.details = details
@@ -151,8 +174,14 @@ class DetailsDialogElement extends HTMLElement {
 
   disconnectedCallback() {
     const state = initialized.get(this)
-    if (!state || !state.details) return
-    state.details.removeEventListener('toggle', toggle)
+    if (!state) return
+    const {details} = state
+    if (!details) return
+    const summary = details.querySelector('summary')
+    details.removeEventListener('toggle', toggle)
+    if (summary) {
+      summary.removeEventListener('click', onSummaryClick, {capture: true})
+    }
     state.details = null
   }
 
