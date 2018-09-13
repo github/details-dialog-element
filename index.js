@@ -25,7 +25,7 @@ function keydown(event: KeyboardEvent): void {
   const details = event.currentTarget
   if (!(details instanceof Element)) return
   if (event.key === 'Escape') {
-    details.removeAttribute('open')
+    toggleDetails(details, false)
     event.stopPropagation()
   } else if (event.key === 'Tab') {
     restrictTabBehavior(event)
@@ -82,12 +82,26 @@ function toggle(event: Event): void {
   }
 }
 
-function findFocusElement(details, dialog): ?HTMLElement {
+function findFocusElement(details: Element, dialog: DetailsDialogElement): ?HTMLElement {
   const state = initialized.get(dialog)
   if (state && state.activeElement instanceof HTMLElement) {
     return state.activeElement
   } else {
     return details.querySelector('summary')
+  }
+}
+
+function toggleDetails(details: Element, open: boolean) {
+  // Don't update unless state is changing
+  if (open === details.hasAttribute('open')) return
+
+  const summary = details.querySelector('summary')
+  if (summary) {
+    // Toggle via clicking summary so it can be canceled by listeners wanting
+    // to prevent the toggle
+    summary.click()
+  } else {
+    open ? details.setAttribute('open', 'open') : details.removeAttribute('open')
   }
 }
 
@@ -116,7 +130,7 @@ class DetailsDialogElement extends HTMLElement {
       if (!(target instanceof Element)) return
       const details = target.closest('details')
       if (details && target.closest(CLOSE_SELECTOR)) {
-        details.removeAttribute('open')
+        toggleDetails(details, false)
       }
     })
   }
@@ -147,7 +161,7 @@ class DetailsDialogElement extends HTMLElement {
     if (!state) return
     const {details} = state
     if (!details) return
-    open ? details.setAttribute('open', 'open') : details.removeAttribute('open')
+    toggleDetails(details, open)
   }
 }
 
