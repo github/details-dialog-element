@@ -24,6 +24,24 @@ import 'details-dialog-element'
 </details>
 ```
 
+## Events
+
+### `details-dialog:will-close`
+
+A `details-dialog:will-close` event is fired when a request to close the dialog
+is made either by pressing escape, clicking the close button, clicking outside
+the dialog, or when `.toggle(false)` is called on an open dialog.
+
+This event can be cancelled to keep the dialog open.
+
+```js
+document.addEventListener('details-dialog:will-close', function(event) {
+  if (!confirm("Are you sure?")) {
+    event.preventDefault()
+  }
+})
+```
+
 ## Browser support
 
 Browsers without native [custom element support][support] require a [polyfill][].
