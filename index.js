@@ -73,12 +73,11 @@ function allowClosingDialog(details: Element): boolean {
 
 function onSummaryClick(event: Event) {
   if (!(event.currentTarget instanceof Element)) return
-
   const details = event.currentTarget.closest('details[open]')
   if (!details) return
 
-  const preventSummaryClick = !allowClosingDialog(details)
-  if (preventSummaryClick) {
+  // Prevent summary click events if details-dialog:will-close was cancelled
+  if (!allowClosingDialog(details)) {
     event.preventDefault()
     event.stopPropagation()
   }
