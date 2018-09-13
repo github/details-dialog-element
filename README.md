@@ -29,8 +29,9 @@ import 'details-dialog-element'
 ### `details-dialog:will-close`
 
 A `details-dialog:will-close` event is fired when a request to close the dialog
-is made either by pressing escape, clicking the close button, clicking outside
-the dialog, or when `.toggle(false)` is called on an open dialog.
+is made either by pressing escape, clicking a `data-close-dialog` element,
+clicking on the `<summary>` element, or when `.toggle(false)` is called on an
+open dialog.
 
 This event can be cancelled to keep the dialog open.
 
