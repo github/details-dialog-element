@@ -101,7 +101,7 @@ function toggleDetails(details: Element, open: boolean) {
     // to prevent the toggle
     summary.click()
   } else {
-    open ? details.setAttribute('open', 'open') : details.removeAttribute('open')
+    open ? details.setAttribute('open', '') : details.removeAttribute('open')
   }
 }
 
