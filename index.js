@@ -46,7 +46,7 @@ function restrictTabBehavior(event: KeyboardEvent): void {
 
   const movement = event.shiftKey ? -1 : 1
   const currentFocus = elements.filter(el => el.matches(':focus'))[0]
-  let targetIndex = elements.length - 1
+  let targetIndex = 0
 
   if (currentFocus) {
     const currentIndex = elements.indexOf(currentFocus)
