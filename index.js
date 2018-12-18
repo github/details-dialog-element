@@ -43,6 +43,7 @@ function restrictTabBehavior(event: KeyboardEvent): void {
   event.preventDefault()
 
   const elements: Array<Focusable> = Array.from(dialog.querySelectorAll(INPUT_SELECTOR)).filter(focusable)
+  if (elements.length === 0) return
 
   const movement = event.shiftKey ? -1 : 1
   const currentFocus = elements.filter(el => el.matches(':focus'))[0]
