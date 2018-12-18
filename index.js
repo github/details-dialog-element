@@ -33,7 +33,7 @@ function keydown(event: KeyboardEvent): void {
 }
 
 function focusable(el: Focusable): boolean {
-  return !el.disabled && !el.hidden && (!el.type || el.type !== 'hidden')
+  return !el.disabled && !el.hidden && (!el.type || el.type !== 'hidden') && !el.closest('[hidden]')
 }
 
 function restrictTabBehavior(event: KeyboardEvent): void {
