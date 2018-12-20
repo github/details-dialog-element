@@ -26,6 +26,9 @@ describe('details-dialog-element', function() {
           <summary>Click</summary>
           <details-dialog>
             <p>Hello</p>
+            <button data-button>Button</button>
+            <button hidden>hidden</button>
+            <div hidden><button>hidden</button></div>
             <button ${CLOSE_ATTR}>Goodbye</button>
           </details-dialog>
         </details>
@@ -73,6 +76,16 @@ describe('details-dialog-element', function() {
       assert(details.open)
       pressEscape(details)
       assert(!details.open)
+    })
+
+    it('manages focus', async function() {
+      summary.click()
+      await waitForToggleEvent(details)
+      assert.equal(document.activeElement, dialog)
+      pressTab(details)
+      assert.equal(document.activeElement, document.querySelector(`[data-button]`))
+      pressTab(details)
+      assert.equal(document.activeElement, document.querySelector(`[${CLOSE_ATTR}]`))
     })
 
     it('supports a cancellable details-dialog:will-close event when a summary element is present', async function() {
@@ -200,5 +213,12 @@ function pressEscape(details) {
   const escapeEvent = document.createEvent('Event')
   escapeEvent.initEvent('keydown', true, true)
   escapeEvent.key = 'Escape'
+  details.dispatchEvent(escapeEvent)
+}
+
+function pressTab(details) {
+  const escapeEvent = document.createEvent('Event')
+  escapeEvent.initEvent('keydown', true, true)
+  escapeEvent.key = 'Tab'
   details.dispatchEvent(escapeEvent)
 }

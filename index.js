@@ -33,7 +33,7 @@ function keydown(event: KeyboardEvent): void {
 }
 
 function focusable(el: Focusable): boolean {
-  return !el.disabled && !el.hidden && (!el.type || el.type !== 'hidden')
+  return !el.disabled && !el.hidden && (!el.type || el.type !== 'hidden') && !el.closest('[hidden]')
 }
 
 function restrictTabBehavior(event: KeyboardEvent): void {
@@ -43,10 +43,11 @@ function restrictTabBehavior(event: KeyboardEvent): void {
   event.preventDefault()
 
   const elements: Array<Focusable> = Array.from(dialog.querySelectorAll(INPUT_SELECTOR)).filter(focusable)
+  if (elements.length === 0) return
 
   const movement = event.shiftKey ? -1 : 1
   const currentFocus = elements.filter(el => el.matches(':focus'))[0]
-  let targetIndex = elements.length - 1
+  let targetIndex = 0
 
   if (currentFocus) {
     const currentIndex = elements.indexOf(currentFocus)
