@@ -26,10 +26,12 @@
     "index.css"
   ],
   "devDependencies": {
-    "babel-cli": "^6.26.0",
+    "@babel/cli": "^7.2.3",
+    "@babel/core": "^7.2.2",
+    "@babel/plugin-transform-modules-umd": "^7.2.0",
+    "@babel/preset-env": "^7.3.1",
+    "@babel/preset-flow": "^7.0.0",
     "babel-plugin-transform-custom-element-classes": "^0.1.0",
-    "babel-preset-es2015": "^6.24.1",
-    "babel-preset-flow": "^6.23.0",
     "chai": "^4.2.0",
     "eslint": "^5.13.0",
     "eslint-plugin-github": "^1.8.1",

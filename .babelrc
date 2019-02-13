@@ -5,16 +5,16 @@
         "transform-custom-element-classes"
       ],
       "presets": [
-        ["es2015", {"modules": false}],
-        "flow"
+        ["@babel/env", {"modules": false}],
+        "@babel/flow"
       ]
     },
     "umd": {
       "plugins": [
         "transform-custom-element-classes",
-        "transform-es2015-modules-umd"
+        "@babel/plugin-transform-modules-umd"
       ],
-      "presets": ["es2015", "flow"]
+      "presets": ["@babel/env", "@babel/flow"]
     }
   }
 }
