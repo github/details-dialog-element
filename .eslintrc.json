@@ -3,5 +3,16 @@
     "plugin:github/es6",
     "plugin:github/browser"
   ],
-  "parser": "babel-eslint"
+  "parser": "babel-eslint",
+  "overrides": [
+    {
+      "files": "test/**/*.js",
+      "env": {
+        "mocha": true
+      },
+      "globals": {
+        "assert": true
+      }
+    }
+  ]
 }
