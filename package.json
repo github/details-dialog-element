@@ -33,14 +33,14 @@
     "@babel/preset-flow": "^7.0.0",
     "babel-preset-github": "^3.0.0",
     "chai": "^4.2.0",
-    "eslint": "^5.13.0",
-    "eslint-plugin-github": "^1.8.1",
-    "flow-bin": "^0.92.1",
+    "eslint": "^5.14.1",
+    "eslint-plugin-github": "^1.10.0",
+    "flow-bin": "^0.93.0",
     "karma": "^4.0.0",
     "karma-chai": "^0.1.0",
     "karma-chrome-launcher": "^2.2.0",
     "karma-mocha": "^1.3.0",
     "karma-mocha-reporter": "^2.2.5",
-    "mocha": "^5.2.0"
+    "mocha": "^6.0.1"
   }
 }
