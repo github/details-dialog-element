@@ -7,7 +7,7 @@
   "module": "dist/index.esm.js",
   "scripts": {
     "clean": "rm -rf dist",
-    "lint": "eslint index.js test/ && flow check",
+    "lint": "github-lint",
     "prebuild": "npm run clean && npm run lint && mkdir dist",
     "build-umd": "BABEL_ENV=umd babel index.js -o dist/index.umd.js && cp index.js.flow dist/index.umd.js.flow",
     "build-esm": "BABEL_ENV=esm babel index.js -o dist/index.esm.js && cp index.js.flow dist/index.esm.js.flow",
