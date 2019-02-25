@@ -42,5 +42,8 @@
     "karma-mocha": "^1.3.0",
     "karma-mocha-reporter": "^2.2.5",
     "mocha": "^6.0.1"
-  }
+  },
+  "eslintIgnore": [
+    "dist/"
+  ]
 }
