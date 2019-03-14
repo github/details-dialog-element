@@ -65,7 +65,7 @@ function allowClosingDialog(details: Element): boolean {
   if (!(dialog instanceof DetailsDialogElement)) return true
 
   return dialog.dispatchEvent(
-    new CustomEvent('details-dialog:will-close', {
+    new CustomEvent('details-dialog-close', {
       bubbles: true,
       cancelable: true
     })
@@ -77,7 +77,7 @@ function onSummaryClick(event: Event): void {
   const details = event.currentTarget.closest('details[open]')
   if (!details) return
 
-  // Prevent summary click events if details-dialog:will-close was cancelled
+  // Prevent summary click events if details-dialog-close was cancelled
   if (!allowClosingDialog(details)) {
     event.preventDefault()
     event.stopPropagation()
