@@ -24,7 +24,7 @@ function autofocus(el: DetailsDialogElement): void {
 function keydown(event: KeyboardEvent): void {
   const details = event.currentTarget
   if (!(details instanceof Element)) return
-  if (event.key === 'Escape') {
+  if (event.key === 'Escape' || event.key === 'Esc') {
     toggleDetails(details, false)
     event.stopPropagation()
   } else if (event.key === 'Tab') {
