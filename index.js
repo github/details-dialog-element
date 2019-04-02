@@ -33,8 +33,7 @@ function keydown(event: KeyboardEvent): void {
 
 function focusable(el: Focusable): boolean {
   return (
-    (el.hasAttribute('tabindex') || el.tabIndex >= 0) &&
-    (!el.disabled && !el.hidden && (!el.type || el.type !== 'hidden') && !el.closest('[hidden]'))
+    el.tabIndex >= 0 && (!el.disabled && !el.hidden && (!el.type || el.type !== 'hidden') && !el.closest('[hidden]'))
   )
 }
 
