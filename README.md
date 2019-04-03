@@ -24,6 +24,25 @@ import 'details-dialog-element'
 </details>
 ```
 
+## Deferred loading
+
+Dialog content can be loaded from a server by embedding an [`<include-fragment>`][fragment] element.
+
+[fragment]: https://github.com/github/include-fragment-element/
+
+```html
+<details>
+  <summary>Robots</summary>
+  <details-dialog src="/robots" preload>
+    <include-fragment>Loading…</include-fragment>
+  </details-dialog>
+</details>
+```
+
+The `src` attribute value is copied to the `<include-fragment>` the first time the `<details>` button is toggled open, which starts the server fetch.
+
+If the `preload` attribute is present, hovering over the `<details>` element will trigger the server fetch.
+
 ## Events
 
 ### `details-dialog:will-close`
