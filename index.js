@@ -132,16 +132,18 @@ function loadIncludeFragment(event: Event) {
   if (!(details instanceof Element)) return
   const dialog = details.querySelector('details-dialog')
   if (!(dialog instanceof DetailsDialogElement)) return
+  const state = initialized.get(dialog)
+  if (!state) return
 
   if (!dialog.src) return
-  if (dialog.loading || dialog.loaded) return
+  if (state.loading || state.loaded) return
 
   const loader: any = dialog.querySelector('include-fragment')
   if (loader) {
-    dialog.setAttribute('loading', '')
+    state.loading = true
     loader.addEventListener('loadend', () => {
-      dialog.setAttribute('loaded', '')
-      dialog.removeAttribute('loading')
+      state.loaded = true
+      state.loading = false
       autofocus(dialog)
     })
     loader.src = dialog.src
@@ -150,7 +152,9 @@ function loadIncludeFragment(event: Event) {
 
 type State = {|
   details: ?Element,
-  activeElement: ?Element
+  activeElement: ?Element,
+  loading?: boolean,
+  loaded?: boolean
 |}
 
 const initialized: WeakMap<Element, State> = new WeakMap()
@@ -192,14 +196,6 @@ class DetailsDialogElement extends HTMLElement {
 
   set preload(value: boolean) {
     value ? this.setAttribute('preload', '') : this.removeAttribute('preload')
-  }
-
-  get loaded(): boolean {
-    return this.hasAttribute('loaded')
-  }
-
-  get loading(): boolean {
-    return this.hasAttribute('loading')
   }
 
   connectedCallback() {
@@ -247,9 +243,11 @@ class DetailsDialogElement extends HTMLElement {
   attributeChangedCallback(attribute: string) {
     const details = this.parentElement
     if (!details) return
+    const state = initialized.get(this)
+    if (!state) return
 
     if (attribute === 'src') {
-      this.removeAttribute('loaded')
+      state.loaded = false
     }
 
     if (this.src) {
