@@ -4,6 +4,7 @@
   <meta charset="utf-8">
   <!-- <script type="text/javascript" src="dist/index.umd.js"></script> -->
   <script type="text/javascript" src="https://unpkg.com/details-dialog-element@latest"></script>
+  <script type="text/javascript" src="https://unpkg.com/include-fragment-element@latest"></script>
   <title>details-dialog-element demo</title>
   <link href="./index.css" rel="stylesheet">
   <link href="https://unpkg.com/primer@latest/build/build.css" rel="stylesheet">
@@ -60,6 +61,13 @@
           <button type="button" class="btn btn-block" data-close-dialog>Close</button>
         </div>
       </div>
+    </details-dialog>
+  </details>
+
+  <details class="details-reset details-with-dialog mt-4">
+    <summary class="btn">Dialog with &lt;include-fragment&gt;</summary>
+    <details-dialog class="details-dialog anim-fade-in fast narrow" src="./content.html" preload>
+      <include-fragment>loading</include-fragment>
     </details-dialog>
   </details>
 

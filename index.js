@@ -127,6 +127,27 @@ function toggleDetails(details: Element, open: boolean) {
   }
 }
 
+function loadIncludeFragment(event: Event) {
+  const details = event.currentTarget
+  if (!(details instanceof Element)) return
+  const dialog = details.querySelector('details-dialog')
+  if (!(dialog instanceof DetailsDialogElement)) return
+
+  if (!dialog.src) return
+  if (dialog.loading || dialog.loaded) return
+
+  const loader: any = dialog.querySelector('include-fragment')
+  if (loader) {
+    dialog.setAttribute('loading', '')
+    loader.addEventListener('loadend', () => {
+      dialog.setAttribute('loaded', '')
+      dialog.removeAttribute('loading')
+      autofocus(dialog)
+    })
+    loader.src = dialog.src
+  }
+}
+
 type State = {|
   details: ?Element,
   activeElement: ?Element
@@ -155,6 +176,30 @@ class DetailsDialogElement extends HTMLElement {
         toggleDetails(details, false)
       }
     })
+  }
+
+  get src(): ?string {
+    return this.getAttribute('src')
+  }
+
+  set src(value: string) {
+    value ? this.setAttribute('src', value) : this.removeAttribute('src')
+  }
+
+  get preload(): boolean {
+    return this.hasAttribute('preload')
+  }
+
+  set preload(value: boolean) {
+    value ? this.setAttribute('preload', '') : this.removeAttribute('preload')
+  }
+
+  get loaded(): boolean {
+    return this.hasAttribute('loaded')
+  }
+
+  get loading(): boolean {
+    return this.hasAttribute('loading')
   }
 
   connectedCallback() {
@@ -193,6 +238,30 @@ class DetailsDialogElement extends HTMLElement {
     const {details} = state
     if (!details) return
     toggleDetails(details, open)
+  }
+
+  static get observedAttributes() {
+    return ['src', 'preload']
+  }
+
+  attributeChangedCallback(attribute: string) {
+    const details = this.parentElement
+    if (!details) return
+
+    if (attribute === 'src') {
+      this.removeAttribute('loaded')
+    }
+
+    if (this.src) {
+      details.addEventListener('toggle', loadIncludeFragment, {once: true})
+
+      if (this.preload) {
+        details.addEventListener('mouseover', loadIncludeFragment, {once: true})
+      }
+    } else {
+      details.removeEventListener('toggle', loadIncludeFragment)
+      details.removeEventListener('mouseover', loadIncludeFragment)
+    }
   }
 }
 
