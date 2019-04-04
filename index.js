@@ -135,10 +135,11 @@ function loadIncludeFragment(event: Event) {
   const state = initialized.get(dialog)
   if (!state) return
 
-  if (!dialog.src) return
   if (state.loading || state.loaded) return
+  const src = dialog.src
+  if (src === null) return
 
-  const loader: any = dialog.querySelector('include-fragment')
+  const loader = dialog.querySelector('include-fragment')
   if (loader) {
     state.loading = true
     loader.addEventListener('loadend', () => {
@@ -146,7 +147,7 @@ function loadIncludeFragment(event: Event) {
       state.loading = false
       autofocus(dialog)
     })
-    loader.src = dialog.src
+    loader.setAttribute('src', src)
   }
 }
 
@@ -187,7 +188,7 @@ class DetailsDialogElement extends HTMLElement {
   }
 
   set src(value: string) {
-    value ? this.setAttribute('src', value) : this.removeAttribute('src')
+    this.setAttribute('src', value)
   }
 
   get preload(): boolean {
