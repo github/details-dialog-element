@@ -132,18 +132,13 @@ function loadIncludeFragment(event: Event) {
   if (!(details instanceof Element)) return
   const dialog = details.querySelector('details-dialog')
   if (!(dialog instanceof DetailsDialogElement)) return
-  const state = initialized.get(dialog)
-  if (!state) return
-
   const loader = dialog.querySelector('include-fragment:not([src])')
   if (!loader) return
 
-  if (state.loaded) return
   const src = dialog.src
   if (src === null) return
 
   loader.addEventListener('loadend', () => {
-    state.loaded = true
     autofocus(dialog)
   })
   loader.setAttribute('src', src)
@@ -151,8 +146,7 @@ function loadIncludeFragment(event: Event) {
 
 type State = {|
   details: ?Element,
-  activeElement: ?Element,
-  loaded?: boolean
+  activeElement: ?Element
 |}
 
 const initialized: WeakMap<Element, State> = new WeakMap()
@@ -238,15 +232,11 @@ class DetailsDialogElement extends HTMLElement {
     return ['src', 'preload']
   }
 
-  attributeChangedCallback(attribute: string) {
+  attributeChangedCallback() {
     const details = this.parentElement
     if (!details) return
     const state = initialized.get(this)
     if (!state) return
-
-    if (attribute === 'src') {
-      state.loaded = false
-    }
 
     if (this.src) {
       details.addEventListener('toggle', loadIncludeFragment, {once: true})
