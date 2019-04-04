@@ -135,26 +135,23 @@ function loadIncludeFragment(event: Event) {
   const state = initialized.get(dialog)
   if (!state) return
 
-  if (state.loading || state.loaded) return
+  const loader = dialog.querySelector('include-fragment:not([src])')
+  if (!loader) return
+
+  if (state.loaded) return
   const src = dialog.src
   if (src === null) return
 
-  const loader = dialog.querySelector('include-fragment')
-  if (loader) {
-    state.loading = true
-    loader.addEventListener('loadend', () => {
-      state.loaded = true
-      state.loading = false
-      autofocus(dialog)
-    })
-    loader.setAttribute('src', src)
-  }
+  loader.addEventListener('loadend', () => {
+    state.loaded = true
+    autofocus(dialog)
+  })
+  loader.setAttribute('src', src)
 }
 
 type State = {|
   details: ?Element,
   activeElement: ?Element,
-  loading?: boolean,
   loaded?: boolean
 |}
 
