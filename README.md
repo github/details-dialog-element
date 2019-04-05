@@ -24,6 +24,23 @@ import 'details-dialog-element'
 </details>
 ```
 
+## Deferred loading
+
+Dialog content can be loaded from a server by embedding an [`<include-fragment>`][fragment] element.
+
+```html
+<details>
+  <summary>Robots</summary>
+  <details-dialog src="/robots" preload>
+    <include-fragment>Loading…</include-fragment>
+  </details-dialog>
+</details>
+```
+
+The `src` attribute value is copied to the `<include-fragment>` the first time the `<details>` button is toggled open, which starts the server fetch.
+
+If the `preload` attribute is present, hovering over the `<details>` element will trigger the server fetch.
+
 ## Events
 
 ### `details-dialog:will-close`
@@ -52,9 +69,6 @@ Browsers without native [custom element support][support] require a [polyfill][]
 - Safari
 - Microsoft Edge
 
-[support]: https://caniuse.com/#feat=custom-elementsv1
-[polyfill]: https://github.com/webcomponents/custom-elements
-
 ## Development
 
 ```
@@ -65,3 +79,7 @@ npm test
 ## License
 
 Distributed under the MIT license. See LICENSE for details.
+
+[fragment]: https://github.com/github/include-fragment-element/
+[support]: https://caniuse.com/#feat=custom-elementsv1
+[polyfill]: https://github.com/webcomponents/custom-elements

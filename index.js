@@ -127,6 +127,23 @@ function toggleDetails(details: Element, open: boolean) {
   }
 }
 
+function loadIncludeFragment(event: Event) {
+  const details = event.currentTarget
+  if (!(details instanceof Element)) return
+  const dialog = details.querySelector('details-dialog')
+  if (!(dialog instanceof DetailsDialogElement)) return
+  const loader = dialog.querySelector('include-fragment:not([src])')
+  if (!loader) return
+
+  const src = dialog.src
+  if (src === null) return
+
+  loader.addEventListener('loadend', () => {
+    autofocus(dialog)
+  })
+  loader.setAttribute('src', src)
+}
+
 type State = {|
   details: ?Element,
   activeElement: ?Element
@@ -155,6 +172,22 @@ class DetailsDialogElement extends HTMLElement {
         toggleDetails(details, false)
       }
     })
+  }
+
+  get src(): ?string {
+    return this.getAttribute('src')
+  }
+
+  set src(value: string) {
+    this.setAttribute('src', value)
+  }
+
+  get preload(): boolean {
+    return this.hasAttribute('preload')
+  }
+
+  set preload(value: boolean) {
+    value ? this.setAttribute('preload', '') : this.removeAttribute('preload')
   }
 
   connectedCallback() {
@@ -193,6 +226,28 @@ class DetailsDialogElement extends HTMLElement {
     const {details} = state
     if (!details) return
     toggleDetails(details, open)
+  }
+
+  static get observedAttributes() {
+    return ['src', 'preload']
+  }
+
+  attributeChangedCallback() {
+    const details = this.parentElement
+    if (!details) return
+    const state = initialized.get(this)
+    if (!state) return
+
+    if (this.src) {
+      details.addEventListener('toggle', loadIncludeFragment, {once: true})
+
+      if (this.preload) {
+        details.addEventListener('mouseover', loadIncludeFragment, {once: true})
+      }
+    } else {
+      details.removeEventListener('toggle', loadIncludeFragment)
+      details.removeEventListener('mouseover', loadIncludeFragment)
+    }
   }
 }
 
