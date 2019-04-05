@@ -88,7 +88,7 @@ describe('details-dialog-element', function() {
       assert.equal(document.activeElement, document.querySelector(`[${CLOSE_ATTR}]`))
     })
 
-    it('supports a cancellable details-dialog:will-close event when a summary element is present', async function() {
+    it('supports a cancellable details-dialog-close event when a summary element is present', async function() {
       dialog.toggle(true)
       await waitForToggleEvent(details)
       assert(details.open)
@@ -96,7 +96,7 @@ describe('details-dialog-element', function() {
       let closeRequestCount = 0
       let allowCloseToHappen = false
       dialog.addEventListener(
-        'details-dialog:will-close',
+        'details-dialog-close',
         function(event) {
           closeRequestCount++
           if (!allowCloseToHappen) {
@@ -133,7 +133,7 @@ describe('details-dialog-element', function() {
         summary.remove()
       })
 
-      it('supports a cancellable details-dialog:will-close event', async function() {
+      it('supports a cancellable details-dialog-close event', async function() {
         dialog.toggle(true)
         await waitForToggleEvent(details)
         assert(details.open)
@@ -141,7 +141,7 @@ describe('details-dialog-element', function() {
         let closeRequestCount = 0
         let allowCloseToHappen = false
         dialog.addEventListener(
-          'details-dialog:will-close',
+          'details-dialog-close',
           function(event) {
             closeRequestCount++
             if (!allowCloseToHappen) {

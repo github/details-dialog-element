@@ -1,6 +1,6 @@
 # &lt;details-dialog&gt; element
 
-A modal dialog that's opened with a &lt;details> button.
+A modal dialog that's opened with a &lt;details&gt; button.
 
 ## Installation
 
@@ -43,17 +43,18 @@ If the `preload` attribute is present, hovering over the `<details>` element wil
 
 ## Events
 
-### `details-dialog:will-close`
+### `details-dialog-close`
 
-A `details-dialog:will-close` event is fired when a request to close the dialog
-is made either by pressing escape, clicking a `data-close-dialog` element,
-clicking on the `<summary>` element, or when `.toggle(false)` is called on an
-open dialog.
+`details-dialog-close` event is fired from `<details-dialog>` when a request to close the dialog is made from
 
-This event can be cancelled to keep the dialog open.
+- pressing <kbd>escape</kbd>,
+- clicking on `summary, [data-close-dialog]`, or
+- `dialog.toggle(false)`
+
+This event bubbles, and can be canceled to keep the dialog open.
 
 ```js
-document.addEventListener('details-dialog:will-close', function(event) {
+document.addEventListener('details-dialog-close', function(event) {
   if (!confirm('Are you sure?')) {
     event.preventDefault()
   }
