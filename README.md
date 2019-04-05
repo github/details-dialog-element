@@ -28,8 +28,6 @@ import 'details-dialog-element'
 
 Dialog content can be loaded from a server by embedding an [`<include-fragment>`][fragment] element.
 
-[fragment]: https://github.com/github/include-fragment-element/
-
 ```html
 <details>
   <summary>Robots</summary>
@@ -71,9 +69,6 @@ Browsers without native [custom element support][support] require a [polyfill][]
 - Safari
 - Microsoft Edge
 
-[support]: https://caniuse.com/#feat=custom-elementsv1
-[polyfill]: https://github.com/webcomponents/custom-elements
-
 ## Development
 
 ```
@@ -84,3 +79,7 @@ npm test
 ## License
 
 Distributed under the MIT license. See LICENSE for details.
+
+[fragment]: https://github.com/github/include-fragment-element/
+[support]: https://caniuse.com/#feat=custom-elementsv1
+[polyfill]: https://github.com/webcomponents/custom-elements
