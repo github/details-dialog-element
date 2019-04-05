@@ -2,7 +2,6 @@
 
 const CLOSE_ATTR = 'data-close-dialog'
 const CLOSE_SELECTOR = `[${CLOSE_ATTR}]`
-const INPUT_SELECTOR = 'a, input, button, textarea, select, summary'
 
 type Focusable =
   | HTMLButtonElement
@@ -33,7 +32,7 @@ function keydown(event: KeyboardEvent): void {
 }
 
 function focusable(el: Focusable): boolean {
-  return !el.disabled && !el.hidden && (!el.type || el.type !== 'hidden') && !el.closest('[hidden]')
+  return el.tabIndex >= 0 && !el.disabled && !el.hidden && (!el.type || el.type !== 'hidden') && !el.closest('[hidden]')
 }
 
 function restrictTabBehavior(event: KeyboardEvent): void {
@@ -42,7 +41,7 @@ function restrictTabBehavior(event: KeyboardEvent): void {
   if (!dialog) return
   event.preventDefault()
 
-  const elements: Array<Focusable> = Array.from(dialog.querySelectorAll(INPUT_SELECTOR)).filter(focusable)
+  const elements: Array<Focusable> = Array.from(dialog.querySelectorAll('*')).filter(focusable)
   if (elements.length === 0) return
 
   const movement = event.shiftKey ? -1 : 1
@@ -157,9 +156,6 @@ class DetailsDialogElement extends HTMLElement {
   }
   static get CLOSE_SELECTOR() {
     return CLOSE_SELECTOR
-  }
-  static get INPUT_SELECTOR() {
-    return INPUT_SELECTOR
   }
 
   constructor() {
