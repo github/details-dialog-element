@@ -138,7 +138,7 @@ function loadIncludeFragment(event: Event) {
   if (src === null) return
 
   loader.addEventListener('loadend', () => {
-    autofocus(dialog)
+    if (details.hasAttribute('open')) autofocus(dialog)
   })
   loader.setAttribute('src', src)
 }
