@@ -138,7 +138,7 @@ function loadIncludeFragment(event: Event) {
   if (src === null) return
 
   loader.addEventListener('loadend', () => {
-    autofocus(dialog)
+    if (details.hasAttribute('open')) autofocus(dialog)
   })
   loader.setAttribute('src', src)
 }
@@ -236,12 +236,13 @@ class DetailsDialogElement extends HTMLElement {
 
     if (this.src) {
       details.addEventListener('toggle', loadIncludeFragment, {once: true})
-
-      if (this.preload) {
-        details.addEventListener('mouseover', loadIncludeFragment, {once: true})
-      }
     } else {
       details.removeEventListener('toggle', loadIncludeFragment)
+    }
+
+    if (this.src && this.preload) {
+      details.addEventListener('mouseover', loadIncludeFragment, {once: true})
+    } else {
       details.removeEventListener('mouseover', loadIncludeFragment)
     }
   }
