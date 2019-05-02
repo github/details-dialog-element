@@ -41,7 +41,7 @@
 <body class="p-4">
   <details class="details-with-dialog">
     <summary>Bare</summary>
-    <details-dialog>
+    <details-dialog aria-label="Dialog with no CSS">
       <p class="mr-6 pr-3">But you can click anywhere to dismiss without JS.</p>
       <button data-close-dialog type="button" autofocus>Close button only works with JS</button>
     </details-dialog>
@@ -49,7 +49,7 @@
 
   <details class="details-reset details-with-dialog mt-4">
     <summary class="btn">Dialog</summary>
-    <details-dialog class="details-dialog anim-fade-in fast wide">
+    <details-dialog class="details-dialog anim-fade-in fast wide" aria-label="Dialog">
       <div class="Box d-flex flex-column">
         <div class="Box-header">
           Title
@@ -66,14 +66,14 @@
 
   <details class="details-reset details-with-dialog mt-4">
     <summary class="btn">Dialog with &lt;include-fragment&gt;</summary>
-    <details-dialog class="Box details-dialog anim-fade-in fast narrow" src="./content.html">
+    <details-dialog class="Box details-dialog anim-fade-in fast narrow" src="./content.html" aria-label="Dialog with include-fragment">
       <div class="Box-body"><include-fragment>loading</include-fragment></div>
     </details-dialog>
   </details>
 
   <details class="details-reset details-with-dialog mt-4">
     <summary class="btn">Dialog with autofocus</summary>
-    <details-dialog class="details-dialog anim-fade-in fast narrow">
+    <details-dialog class="details-dialog anim-fade-in fast narrow" aria-label="Dialog with autofocus">
       <div class="Box d-flex flex-column">
         <div class="Box-header">
           Title
