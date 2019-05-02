@@ -188,6 +188,7 @@ class DetailsDialogElement extends HTMLElement {
 
   connectedCallback() {
     this.setAttribute('role', 'dialog')
+    this.setAttribute('aria-modal', 'true')
     const state = initialized.get(this)
     if (!state) return
     const details = this.parentElement
