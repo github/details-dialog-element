@@ -45,6 +45,12 @@ describe('details-dialog-element', function() {
       document.body.innerHTML = ''
     })
 
+    it('initializes', function() {
+      assert.equal(summary.getAttribute('role'), 'button')
+      assert.equal(dialog.getAttribute('role'), 'dialog')
+      assert.equal(dialog.getAttribute('aria-modal'), 'true')
+    })
+
     it('toggles open', function() {
       assert(!details.open)
       dialog.toggle(true)
