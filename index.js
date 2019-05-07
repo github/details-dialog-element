@@ -196,7 +196,7 @@ class DetailsDialogElement extends HTMLElement {
 
     const summary = details.querySelector('summary')
     if (summary) {
-      summary.setAttribute('aria-haspopup', 'dialog')
+      summary.setAttribute('role', 'button')
       summary.addEventListener('click', onSummaryClick, {capture: true})
     }
 
