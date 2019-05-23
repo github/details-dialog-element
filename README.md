@@ -5,13 +5,13 @@ A modal dialog that's opened with a &lt;details&gt; button.
 ## Installation
 
 ```
-$ npm install --save details-dialog-element
+$ npm install --save @github/details-dialog-element
 ```
 
 ## Usage
 
 ```js
-import 'details-dialog-element'
+import '@github/details-dialog-element'
 ```
 
 ```html
