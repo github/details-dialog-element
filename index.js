@@ -144,8 +144,7 @@ function loadIncludeFragment(event: Event) {
 }
 
 function updateIncludeFragmentEventListeners(details: Element, src: ?string, preload: boolean) {
-  details.removeEventListener('toggle', loadIncludeFragment)
-  details.removeEventListener('mouseover', loadIncludeFragment)
+  removeIncludeFragmentEventListeners(details)
 
   if (src) {
     details.addEventListener('toggle', loadIncludeFragment, {once: true})
@@ -154,6 +153,11 @@ function updateIncludeFragmentEventListeners(details: Element, src: ?string, pre
   if (src && preload) {
     details.addEventListener('mouseover', loadIncludeFragment, {once: true})
   }
+}
+
+function removeIncludeFragmentEventListeners(details: Element) {
+  details.removeEventListener('toggle', loadIncludeFragment)
+  details.removeEventListener('mouseover', loadIncludeFragment)
 }
 
 type State = {|
@@ -225,6 +229,7 @@ class DetailsDialogElement extends HTMLElement {
     const {details} = state
     if (!details) return
     details.removeEventListener('toggle', toggle)
+    removeIncludeFragmentEventListeners(details)
     const summary = details.querySelector('summary')
     if (summary) {
       summary.removeEventListener('click', onSummaryClick, {capture: true})
