@@ -235,16 +235,15 @@ class DetailsDialogElement extends HTMLElement {
     const state = initialized.get(this)
     if (!state) return
 
+    details.removeEventListener('toggle', loadIncludeFragment)
+    details.removeEventListener('mouseover', loadIncludeFragment)
+
     if (this.src) {
       details.addEventListener('toggle', loadIncludeFragment, {once: true})
-    } else {
-      details.removeEventListener('toggle', loadIncludeFragment)
     }
 
     if (this.src && this.preload) {
       details.addEventListener('mouseover', loadIncludeFragment, {once: true})
-    } else {
-      details.removeEventListener('mouseover', loadIncludeFragment)
     }
   }
 }
