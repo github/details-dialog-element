@@ -200,6 +200,39 @@ describe('details-dialog-element', function() {
         assert(!details.open)
       })
     })
+
+    describe('when using with inlcude-fragment', function() {
+      let includeFragment
+      beforeEach(function() {
+        includeFragment = document.createElement('include-fragment')
+        dialog.innerHTML = ''
+        dialog.append(includeFragment)
+        dialog.src = '/404'
+      })
+
+      afterEach(function() {
+        dialog.innerHTML = ''
+        dialog.removeAttribute('src')
+      })
+
+      it('transfers src on toggle', async function() {
+        assert(!details.open)
+        assert.notOk(includeFragment.getAttribute('src'))
+        dialog.toggle(true)
+        await waitForToggleEvent(details)
+        assert(details.open)
+        assert.equal(includeFragment.getAttribute('src'), '/404')
+      })
+
+      it('transfers src on mouseover when preload is true', async function() {
+        assert(!details.open)
+        dialog.preload = true
+        assert(dialog.hasAttribute('preload'))
+        assert.notOk(includeFragment.getAttribute('src'))
+        triggerEvent(details, 'mouseover')
+        assert.equal(includeFragment.getAttribute('src'), '/404')
+      })
+    })
   })
 })
 
@@ -215,16 +248,17 @@ function waitForToggleEvent(details) {
   })
 }
 
+function triggerEvent(element, name, key) {
+  const event = document.createEvent('Event')
+  event.initEvent(name, true, true)
+  if (key) event.key = key
+  element.dispatchEvent(event)
+}
+
 function pressEscape(details) {
-  const escapeEvent = document.createEvent('Event')
-  escapeEvent.initEvent('keydown', true, true)
-  escapeEvent.key = 'Escape'
-  details.dispatchEvent(escapeEvent)
+  triggerEvent(details, 'keydown', 'Escape')
 }
 
 function pressTab(details) {
-  const escapeEvent = document.createEvent('Event')
-  escapeEvent.initEvent('keydown', true, true)
-  escapeEvent.key = 'Tab'
-  details.dispatchEvent(escapeEvent)
+  triggerEvent(details, 'keydown', 'Tab')
 }
