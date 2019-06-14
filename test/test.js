@@ -233,6 +233,36 @@ describe('details-dialog-element', function() {
         assert.equal(includeFragment.getAttribute('src'), '/404')
       })
     })
+
+    describe('with inlcude-fragment works for script made dialogs', function() {
+      let includeFragment
+      beforeEach(function() {
+        dialog.remove()
+        dialog = document.createElement('details-dialog')
+        dialog.src = '/404'
+        dialog.preload = true
+        includeFragment = document.createElement('include-fragment')
+        dialog.append(includeFragment)
+        details.append(dialog)
+        includeFragment = document.querySelector('include-fragment')
+      })
+
+      it('transfers src on toggle', async function() {
+        assert(!details.open)
+        assert.notOk(includeFragment.getAttribute('src'))
+        dialog.toggle(true)
+        await waitForToggleEvent(details)
+        assert(details.open)
+        assert.equal(includeFragment.getAttribute('src'), '/404')
+      })
+
+      it('transfers src on mouseover', async function() {
+        assert(!details.open)
+        assert.notOk(includeFragment.getAttribute('src'))
+        triggerEvent(details, 'mouseover')
+        assert.equal(includeFragment.getAttribute('src'), '/404')
+      })
+    })
   })
 })
 
