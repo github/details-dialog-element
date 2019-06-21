@@ -94,6 +94,19 @@ describe('details-dialog-element', function() {
       assert.equal(document.activeElement, document.querySelector(`[${CLOSE_ATTR}]`))
     })
 
+    it('manages focus with hidden items', async function() {
+      summary.click()
+      await waitForToggleEvent(details)
+      const closedDetails = document.createElement('details')
+      closedDetails.append(document.createElement('input'))
+      dialog.prepend(closedDetails)
+      assert.equal(document.activeElement, dialog)
+      pressTab(details)
+      assert.equal(document.activeElement, document.querySelector(`[data-button]`))
+      pressTab(details)
+      assert.equal(document.activeElement, document.querySelector(`[${CLOSE_ATTR}]`))
+    })
+
     it('supports a cancellable details-dialog-close event when a summary element is present', async function() {
       dialog.toggle(true)
       await waitForToggleEvent(details)
