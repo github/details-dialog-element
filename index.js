@@ -3,14 +3,6 @@
 const CLOSE_ATTR = 'data-close-dialog'
 const CLOSE_SELECTOR = `[${CLOSE_ATTR}]`
 
-type Focusable =
-  | HTMLButtonElement
-  | HTMLInputElement
-  | HTMLAnchorElement
-  | HTMLTextAreaElement
-  | HTMLSelectElement
-  | HTMLElement
-
 function autofocus(el: DetailsDialogElement): void {
   let autofocus = el.querySelector('[autofocus]')
   if (!autofocus) {
@@ -31,8 +23,8 @@ function keydown(event: KeyboardEvent): void {
   }
 }
 
-function focusable(el: Focusable): boolean {
-  return el.tabIndex >= 0 && !el.disabled && !el.hidden && (!el.type || el.type !== 'hidden') && !el.closest('[hidden]')
+function focusable(el: HTMLElement): boolean {
+  return el.tabIndex >= 0
 }
 
 function restrictTabBehavior(event: KeyboardEvent): void {
@@ -41,7 +33,7 @@ function restrictTabBehavior(event: KeyboardEvent): void {
   if (!dialog) return
   event.preventDefault()
 
-  const elements: Array<Focusable> = Array.from(dialog.querySelectorAll('*')).filter(focusable)
+  const elements: Array<HTMLElement> = Array.from(dialog.querySelectorAll('*')).filter(focusable)
   if (elements.length === 0) return
 
   const movement = event.shiftKey ? -1 : 1
