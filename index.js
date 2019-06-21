@@ -38,17 +38,23 @@ function restrictTabBehavior(event: KeyboardEvent): void {
 
   const movement = event.shiftKey ? -1 : 1
   const currentFocus = elements.filter(el => el.matches(':focus'))[0]
-  let targetIndex = 0
+  let targetIndex = -1
 
   if (currentFocus) {
     const currentIndex = elements.indexOf(currentFocus)
-    if (currentIndex !== -1) {
-      const newIndex = currentIndex + movement
-      if (newIndex >= 0) targetIndex = newIndex % elements.length
+    if (currentIndex >= 0) {
+      targetIndex = currentIndex
     }
   }
 
-  elements[targetIndex].focus()
+  for (let i = 0; i < elements.length; i++) {
+    targetIndex += movement
+    targetIndex %= elements.length
+    if (targetIndex < 0) targetIndex = elements.length - 1
+    const focusEl = elements[targetIndex]
+    focusEl.focus()
+    if (focusEl === document.activeElement) return
+  }
 }
 
 function allowClosingDialog(details: Element): boolean {
