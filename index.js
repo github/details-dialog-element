@@ -250,10 +250,10 @@ class DetailsDialogElement extends HTMLElement {
   }
 
   attributeChangedCallback() {
-    const details = this.parentElement
-    if (!details) return
     const state = initialized.get(this)
     if (!state) return
+    const {details} = state
+    if (!details) return
 
     updateIncludeFragmentEventListeners(details, this.src, this.preload)
   }
