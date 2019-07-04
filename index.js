@@ -12,12 +12,12 @@ type Focusable =
   | HTMLElement
 
 function autofocus(el: DetailsDialogElement): void {
-  let autofocus = el.querySelector('[autofocus]')
-  if (!autofocus) {
-    autofocus = el
+  let autofocusElement = el.querySelector('[autofocus]')
+  if (!autofocusElement) {
+    autofocusElement = el
     el.setAttribute('tabindex', '-1')
   }
-  autofocus.focus()
+  autofocusElement.focus()
 }
 
 function keydown(event: KeyboardEvent): void {
