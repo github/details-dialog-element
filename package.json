@@ -5,6 +5,7 @@
   "repository": "github/details-dialog-element",
   "main": "dist/index.umd.js",
   "module": "dist/index.esm.js",
+  "types": "index.d.ts",
   "scripts": {
     "clean": "rm -rf dist",
     "lint": "github-lint",
@@ -23,7 +24,8 @@
   "license": "MIT",
   "files": [
     "dist",
-    "index.css"
+    "index.css",
+    "index.d.ts"
   ],
   "devDependencies": {
     "@babel/cli": "^7.5.0",
