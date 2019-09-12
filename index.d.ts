@@ -4,6 +4,6 @@ export default class DetailsDialogElement extends HTMLElement {
 
 declare global {
   interface Window {
-    DetailsDialogElement: DetailsDialogElement
+    DetailsDialogElement: typeof DetailsDialogElement
   }
 }
