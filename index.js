@@ -32,14 +32,7 @@ function keydown(event: KeyboardEvent): void {
 }
 
 function focusable(el: Focusable): boolean {
-  return (
-    el.tabIndex >= 0 &&
-    !el.disabled &&
-    !el.hidden &&
-    (!el.type || el.type !== 'hidden') &&
-    !el.closest('[hidden]') &&
-    visible(el)
-  )
+  return el.tabIndex >= 0 && !el.disabled && !el.hidden && (!el.type || el.type !== 'hidden') && visible(el)
 }
 
 function visible(el): boolean {
