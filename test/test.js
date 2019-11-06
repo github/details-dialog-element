@@ -89,6 +89,8 @@ describe('details-dialog-element', function() {
       summary.click()
       await waitForToggleEvent(details)
       assert.equal(document.activeElement, dialog)
+      pressTab(details, true)
+      assert.equal(document.activeElement, document.querySelector(`[${CLOSE_ATTR}]`))
       pressTab(details)
       assert.equal(document.activeElement, document.querySelector(`[data-button]`))
       pressTab(details)
@@ -279,17 +281,22 @@ function waitForToggleEvent(details) {
   })
 }
 
-function triggerEvent(element, name, key) {
-  const event = document.createEvent('Event')
-  event.initEvent(name, true, true)
-  if (key) event.key = key
-  element.dispatchEvent(event)
+function triggerEvent(element, name, key, shiftKey) {
+  const eventklass = name.match(/^mouse/) ? MouseEvent : KeyboardEvent
+  element.dispatchEvent(
+    new eventklass(name, {
+      bubbles: true,
+      cancelable: true,
+      key,
+      shiftKey
+    })
+  )
 }
 
 function pressEscape(details) {
   triggerEvent(details, 'keydown', 'Escape')
 }
 
-function pressTab(details) {
-  triggerEvent(details, 'keydown', 'Tab')
+function pressTab(details, shift) {
+  triggerEvent(details, 'keydown', 'Tab', shift)
 }
