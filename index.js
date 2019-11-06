@@ -32,11 +32,11 @@ function keydown(event: KeyboardEvent): void {
 }
 
 function focusable(el: Focusable): boolean {
-  return el.tabIndex >= 0 && !el.disabled && !el.hidden && (!el.type || el.type !== 'hidden') && visible(el)
+  return el.tabIndex >= 0 && !el.disabled && visible(el)
 }
 
 function visible(el): boolean {
-  return el.offsetWidth > 0 || el.offsetHeight > 0
+  return !el.hidden && (!el.type || el.type !== 'hidden') && (el.offsetWidth > 0 || el.offsetHeight > 0)
 }
 
 function restrictTabBehavior(event: KeyboardEvent): void {
