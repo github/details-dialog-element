@@ -56,7 +56,11 @@ function restrictTabBehavior(event: KeyboardEvent): void {
     const currentIndex = elements.indexOf(currentFocus)
     if (currentIndex !== -1) {
       const newIndex = currentIndex + movement
-      if (newIndex >= 0) targetIndex = newIndex % elements.length
+      if (newIndex < 0) {
+        targetIndex = elements.length - 1
+      } else {
+        targetIndex = newIndex % elements.length
+      }
     }
   }
 
