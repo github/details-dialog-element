@@ -50,18 +50,19 @@ function restrictTabBehavior(event: KeyboardEvent): void {
 
   const movement = event.shiftKey ? -1 : 1
   const currentFocus = dialog.contains(document.activeElement) ? document.activeElement : null
-  let targetIndex = 0
+  let targetIndex = movement === -1 ? -1 : 0
 
   if (currentFocus) {
     const currentIndex = elements.indexOf(currentFocus)
     if (currentIndex !== -1) {
-      const newIndex = currentIndex + movement
-      if (newIndex < 0) {
-        targetIndex = elements.length - 1
-      } else {
-        targetIndex = newIndex % elements.length
-      }
+      targetIndex = currentIndex + movement
     }
+  }
+
+  if (targetIndex < 0) {
+    targetIndex = elements.length - 1
+  } else {
+    targetIndex = targetIndex % elements.length
   }
 
   elements[targetIndex].focus()
