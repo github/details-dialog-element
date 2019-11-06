@@ -29,6 +29,7 @@ describe('details-dialog-element', function() {
             <button data-button>Button</button>
             <button hidden>hidden</button>
             <div hidden><button>hidden</button></div>
+            <details><button>Button in closed details</button></details>
             <button ${CLOSE_ATTR}>Goodbye</button>
           </details-dialog>
         </details>

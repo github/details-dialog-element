@@ -12,7 +12,7 @@ type Focusable =
   | HTMLElement
 
 function autofocus(el: DetailsDialogElement): void {
-  let autofocusElement = el.querySelector('[autofocus]')
+  let autofocusElement = Array.from(el.querySelectorAll('[autofocus]')).filter(focusable)[0]
   if (!autofocusElement) {
     autofocusElement = el
     el.setAttribute('tabindex', '-1')
@@ -32,7 +32,11 @@ function keydown(event: KeyboardEvent): void {
 }
 
 function focusable(el: Focusable): boolean {
-  return el.tabIndex >= 0 && !el.disabled && !el.hidden && (!el.type || el.type !== 'hidden') && !el.closest('[hidden]')
+  return el.tabIndex >= 0 && !el.disabled && visible(el)
+}
+
+function visible(el): boolean {
+  return !el.hidden && (!el.type || el.type !== 'hidden') && (el.offsetWidth > 0 || el.offsetHeight > 0)
 }
 
 function restrictTabBehavior(event: KeyboardEvent): void {
