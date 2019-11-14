@@ -81,7 +81,7 @@ describe('details-dialog-element', function() {
       dialog.toggle(true)
       await waitForToggleEvent(details)
       assert(details.open)
-      pressEscape(details)
+      triggerKeydownEvent(details, 'Escape')
       assert(!details.open)
     })
 
@@ -89,9 +89,11 @@ describe('details-dialog-element', function() {
       summary.click()
       await waitForToggleEvent(details)
       assert.equal(document.activeElement, dialog)
-      pressTab(details)
+      triggerKeydownEvent(details, 'Tab', true)
+      assert.equal(document.activeElement, document.querySelector(`[${CLOSE_ATTR}]`))
+      triggerKeydownEvent(details, 'Tab')
       assert.equal(document.activeElement, document.querySelector(`[data-button]`))
-      pressTab(details)
+      triggerKeydownEvent(details, 'Tab')
       assert.equal(document.activeElement, document.querySelector(`[${CLOSE_ATTR}]`))
     })
 
@@ -122,7 +124,7 @@ describe('details-dialog-element', function() {
       assert(details.open)
       assert.equal(closeRequestCount, 2)
 
-      pressEscape(details)
+      triggerKeydownEvent(details, 'Escape')
       assert(details.open)
       assert.equal(closeRequestCount, 3)
 
@@ -163,7 +165,7 @@ describe('details-dialog-element', function() {
         assert(details.open)
         assert.equal(closeRequestCount, 1)
 
-        pressEscape(details)
+        triggerKeydownEvent(details, 'Escape')
         assert(details.open)
         assert.equal(closeRequestCount, 2)
 
@@ -197,7 +199,7 @@ describe('details-dialog-element', function() {
         dialog.toggle(true)
         await waitForToggleEvent(details)
         assert(details.open)
-        pressEscape(details)
+        triggerKeydownEvent(details, 'Escape')
         assert(!details.open)
       })
     })
@@ -230,7 +232,7 @@ describe('details-dialog-element', function() {
         dialog.preload = true
         assert(dialog.hasAttribute('preload'))
         assert.notOk(includeFragment.getAttribute('src'))
-        triggerEvent(details, 'mouseover')
+        triggerMouseoverEvent(details)
         assert.equal(includeFragment.getAttribute('src'), '/404')
       })
     })
@@ -260,7 +262,7 @@ describe('details-dialog-element', function() {
       it('transfers src on mouseover', async function() {
         assert(!details.open)
         assert.notOk(includeFragment.getAttribute('src'))
-        triggerEvent(details, 'mouseover')
+        triggerMouseoverEvent(details)
         assert.equal(includeFragment.getAttribute('src'), '/404')
       })
     })
@@ -279,17 +281,21 @@ function waitForToggleEvent(details) {
   })
 }
 
-function triggerEvent(element, name, key) {
-  const event = document.createEvent('Event')
-  event.initEvent(name, true, true)
-  if (key) event.key = key
-  element.dispatchEvent(event)
+function triggerMouseoverEvent(element) {
+  element.dispatchEvent(
+    new MouseEvent('mouseover', {
+      bubbles: true,
+      cancelable: true
+    })
+  )
 }
-
-function pressEscape(details) {
-  triggerEvent(details, 'keydown', 'Escape')
-}
-
-function pressTab(details) {
-  triggerEvent(details, 'keydown', 'Tab')
+function triggerKeydownEvent(element, key, shiftKey) {
+  element.dispatchEvent(
+    new KeyboardEvent('keydown', {
+      bubbles: true,
+      cancelable: true,
+      key,
+      shiftKey
+    })
+  )
 }
