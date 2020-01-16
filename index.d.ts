@@ -6,4 +6,7 @@ declare global {
   interface Window {
     DetailsDialogElement: typeof DetailsDialogElement
   }
+  interface HTMLElementTagNameMap {
+    'details-dialog': DetailsDialogElement
+  }
 }
