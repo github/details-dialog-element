@@ -82,8 +82,8 @@ function allowClosingDialog(details: Element): boolean {
 
 function onSummaryClick(event: Event): void {
   if (!(event.currentTarget instanceof Element)) return
-  const details = event.currentTarget.closest('details[open]')
-  if (!details) return
+  const details = event.currentTarget.closest('details')
+  if (!details || !details.hasAttribute('open')) return
 
   // Prevent summary click events if details-dialog-close was cancelled
   if (!allowClosingDialog(details)) {
