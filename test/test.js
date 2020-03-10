@@ -22,23 +22,25 @@ describe('details-dialog-element', function() {
     beforeEach(function() {
       const container = document.createElement('div')
       container.innerHTML = `
-        <details>
-          <summary>Click</summary>
-          <details-dialog>
-            <p>Hello</p>
-            <button data-button>Button</button>
-            <button hidden>hidden</button>
-            <div hidden><button>hidden</button></div>
-            <details><button>Button in closed details</button></details>
-            <button ${CLOSE_ATTR}>Goodbye</button>
-          </details-dialog>
+        <details open>
+          <details id="details">
+            <summary id="summary">Click</summary>
+            <details-dialog>
+              <p>Hello</p>
+              <button data-button>Button</button>
+              <button hidden>hidden</button>
+              <div hidden><button>hidden</button></div>
+              <details><button>Button in closed details</button></details>
+              <button ${CLOSE_ATTR}>Goodbye</button>
+            </details-dialog>
+          </details>
         </details>
       `
       document.body.append(container)
 
-      details = document.querySelector('details')
+      details = document.querySelector('#details')
       dialog = details.querySelector('details-dialog')
-      summary = details.querySelector('summary')
+      summary = details.querySelector('#summary')
       close = dialog.querySelector(CLOSE_SELECTOR)
     })
 
@@ -135,6 +137,11 @@ describe('details-dialog-element', function() {
       allowCloseToHappen = true
       close.click()
       assert(!details.open)
+      assert.equal(closeRequestCount, 5)
+
+      summary.click()
+      assert(details.open)
+      assert.equal(closeRequestCount, 5)
     })
 
     describe('when no summary element is present', function() {
