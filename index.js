@@ -49,7 +49,7 @@ function restrictTabBehavior(event: KeyboardEvent): void {
   if (elements.length === 0) return
 
   const movement = event.shiftKey ? -1 : 1
-  const currentFocus = dialog.contains(document.activeElement) ? document.activeElement : null
+  const currentFocus = dialog.contains(dialog.getRootNode().activeElement) ? dialog.getRootNode().activeElement : null
   let targetIndex = movement === -1 ? -1 : 0
 
   if (currentFocus) {
@@ -99,8 +99,8 @@ function toggle(event: Event): void {
   if (!(dialog instanceof DetailsDialogElement)) return
 
   if (details.hasAttribute('open')) {
-    if (document.activeElement) {
-      initialized.set(dialog, {details, activeElement: document.activeElement})
+    if (dialog.getRootNode().activeElement) {
+      initialized.set(dialog, {details, activeElement: dialog.getRootNode().activeElement})
     }
 
     autofocus(dialog)
