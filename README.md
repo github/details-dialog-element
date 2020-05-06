@@ -10,9 +10,21 @@ $ npm install --save @github/details-dialog-element
 
 ## Usage
 
+### Script
+
+Import as ES modules:
+
 ```js
 import '@github/details-dialog-element'
 ```
+
+Include with a script tag:
+
+```html
+<script type="module" src="./node_modules/@github/details-dialog-element/dist/index.js">
+```
+
+### Markup
 
 ```html
 <details>
