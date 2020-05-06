@@ -5,7 +5,7 @@ type Target = Disableable | Focusable
 
 type Disableable = HTMLButtonElement | HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
 
-type Focusable = HTMLAnchorElement | HTMLElement
+type Focusable = HTMLElement
 
 function autofocus(el: DetailsDialogElement): void {
   let autofocusElement = Array.from(el.querySelectorAll<HTMLElement>('[autofocus]')).filter(focusable)[0]
