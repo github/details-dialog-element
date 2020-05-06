@@ -2,11 +2,12 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <!-- <script type="text/javascript" src="dist/index.umd.js"></script> -->
-  <script type="text/javascript" src="https://unpkg.com/@github/details-dialog-element@latest"></script>
+  <script src="./shadow-demo.js"></script>
+  <!-- <script type="module" src="../dist/index.js"></script> -->
+  <script type="module" src="https://unpkg.com/@github/details-dialog-element@latest"></script>
   <script type="text/javascript" src="https://unpkg.com/@github/include-fragment-element@latest"></script>
   <title>details-dialog-element demo</title>
-  <link href="./index.css" rel="stylesheet">
+  <link href="../src/index.css" rel="stylesheet">
   <link href="https://unpkg.com/primer@latest/build/build.css" rel="stylesheet">
   <style>
     .details-with-dialog[open] > summary {
@@ -95,5 +96,7 @@
   </details>
 
   <button type="button" class="btn mt-4" onclick="document.querySelector('details').open = true">JS trigger: focus should return here</button>
+
+  <shadow-dialog></shadow-dialog>
 </body>
 </html>

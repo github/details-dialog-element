@@ -1,17 +1,17 @@
 {
   "extends": [
+    "plugin:github/browser",
     "plugin:github/es6",
-    "plugin:github/browser"
+    "plugin:github/typescript"
   ],
-  "parser": "babel-eslint",
+  "globals": {
+    "DetailsDialogElement": "readable"
+  },
   "overrides": [
     {
       "files": "test/**/*.js",
-      "env": {
-        "mocha": true
-      },
-      "globals": {
-        "assert": true
+      "rules": {
+        "github/unescaped-html-literal": "off"
       }
     }
   ]

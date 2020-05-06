@@ -1,18 +1,14 @@
-/* @flow strict */
-
 const CLOSE_ATTR = 'data-close-dialog'
 const CLOSE_SELECTOR = `[${CLOSE_ATTR}]`
 
-type Focusable =
-  | HTMLButtonElement
-  | HTMLInputElement
-  | HTMLAnchorElement
-  | HTMLTextAreaElement
-  | HTMLSelectElement
-  | HTMLElement
+type Target = Disableable | Focusable
+
+type Disableable = HTMLButtonElement | HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+
+type Focusable = HTMLElement
 
 function autofocus(el: DetailsDialogElement): void {
-  let autofocusElement = Array.from(el.querySelectorAll('[autofocus]')).filter(focusable)[0]
+  let autofocusElement = Array.from(el.querySelectorAll<HTMLElement>('[autofocus]')).filter(focusable)[0]
   if (!autofocusElement) {
     autofocusElement = el
     el.setAttribute('tabindex', '-1')
@@ -31,12 +27,16 @@ function keydown(event: KeyboardEvent): void {
   }
 }
 
-function focusable(el: Focusable): boolean {
-  return el.tabIndex >= 0 && !el.disabled && visible(el)
+function focusable(el: Target): boolean {
+  return el.tabIndex >= 0 && !(el as Disableable).disabled && visible(el)
 }
 
-function visible(el): boolean {
-  return !el.hidden && (!el.type || el.type !== 'hidden') && (el.offsetWidth > 0 || el.offsetHeight > 0)
+function visible(el: Target): boolean {
+  return (
+    !el.hidden &&
+    (!(el as Disableable).type || (el as Disableable).type !== 'hidden') &&
+    (el.offsetWidth > 0 || el.offsetHeight > 0)
+  )
 }
 
 function restrictTabBehavior(event: KeyboardEvent): void {
@@ -45,14 +45,15 @@ function restrictTabBehavior(event: KeyboardEvent): void {
   if (!dialog) return
   event.preventDefault()
 
-  const elements: Array<Focusable> = Array.from(dialog.querySelectorAll('*')).filter(focusable)
+  const elements: Target[] = Array.from(dialog.querySelectorAll<HTMLElement>('*')).filter(focusable)
   if (elements.length === 0) return
 
   const movement = event.shiftKey ? -1 : 1
-  const currentFocus = dialog.contains(document.activeElement) ? document.activeElement : null
+  const root = dialog.getRootNode() as Document | ShadowRoot
+  const currentFocus = dialog.contains(root.activeElement) ? root.activeElement : null
   let targetIndex = movement === -1 ? -1 : 0
 
-  if (currentFocus) {
+  if (currentFocus instanceof HTMLElement) {
     const currentIndex = elements.indexOf(currentFocus)
     if (currentIndex !== -1) {
       targetIndex = currentIndex + movement
@@ -99,23 +100,24 @@ function toggle(event: Event): void {
   if (!(dialog instanceof DetailsDialogElement)) return
 
   if (details.hasAttribute('open')) {
-    if (document.activeElement) {
-      initialized.set(dialog, {details, activeElement: document.activeElement})
+    const root = dialog.getRootNode() as Document | ShadowRoot
+    if (root.activeElement instanceof HTMLElement) {
+      initialized.set(dialog, {details, activeElement: root.activeElement})
     }
 
     autofocus(dialog)
-    details.addEventListener('keydown', keydown)
+    ;(details as HTMLElement).addEventListener('keydown', keydown)
   } else {
     for (const form of dialog.querySelectorAll('form')) {
-      if (form instanceof HTMLFormElement) form.reset()
+      form.reset()
     }
     const focusElement = findFocusElement(details, dialog)
     if (focusElement) focusElement.focus()
-    details.removeEventListener('keydown', keydown)
+    ;(details as HTMLElement).removeEventListener('keydown', keydown)
   }
 }
 
-function findFocusElement(details: Element, dialog: DetailsDialogElement): ?HTMLElement {
+function findFocusElement(details: Element, dialog: DetailsDialogElement): HTMLElement | null {
   const state = initialized.get(dialog)
   if (state && state.activeElement instanceof HTMLElement) {
     return state.activeElement
@@ -152,7 +154,7 @@ function loadIncludeFragment(event: Event) {
   loader.setAttribute('src', src)
 }
 
-function updateIncludeFragmentEventListeners(details: Element, src: ?string, preload: boolean) {
+function updateIncludeFragmentEventListeners(details: Element, src: string | null, preload: boolean) {
   removeIncludeFragmentEventListeners(details)
 
   if (src) {
@@ -169,10 +171,10 @@ function removeIncludeFragmentEventListeners(details: Element) {
   details.removeEventListener('mouseover', loadIncludeFragment)
 }
 
-type State = {|
-  details: ?Element,
-  activeElement: ?Element
-|}
+type State = {
+  details: Element | null
+  activeElement: HTMLElement | null
+}
 
 const initialized: WeakMap<Element, State> = new WeakMap()
 
@@ -187,7 +189,7 @@ class DetailsDialogElement extends HTMLElement {
   constructor() {
     super()
     initialized.set(this, {details: null, activeElement: null})
-    this.addEventListener('click', function({target}: Event) {
+    this.addEventListener('click', function ({target}: Event) {
       if (!(target instanceof Element)) return
       const details = target.closest('details')
       if (details && target.closest(CLOSE_SELECTOR)) {
@@ -196,12 +198,12 @@ class DetailsDialogElement extends HTMLElement {
     })
   }
 
-  get src(): ?string {
+  get src(): string | null {
     return this.getAttribute('src')
   }
 
-  set src(value: string) {
-    this.setAttribute('src', value)
+  set src(value: string | null) {
+    this.setAttribute('src', value || '')
   }
 
   get preload(): boolean {
@@ -265,6 +267,12 @@ class DetailsDialogElement extends HTMLElement {
     if (!details) return
 
     updateIncludeFragmentEventListeners(details, this.src, this.preload)
+  }
+}
+
+declare global {
+  interface Window {
+    DetailsDialogElement: typeof DetailsDialogElement
   }
 }
 

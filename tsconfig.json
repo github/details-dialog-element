@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+    "module": "esnext",
+    "target": "es2017",
+    "lib": [
+      "es2018",
+      "dom",
+      "dom.iterable"
+    ],
+    "strict": true,
+    "declaration": true,
+    "outDir": "dist",
+    "removeComments": true,
+    "preserveConstEnums": true
+  },
+  "files": [
+    "src/index.ts"
+  ]
+}

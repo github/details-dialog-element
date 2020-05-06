@@ -274,6 +274,54 @@ describe('details-dialog-element', function() {
       })
     })
   })
+
+  describe('shadow DOM context', function() {
+    let shadowRoot, details, summary, dialog
+    beforeEach(function() {
+      const container = document.createElement('div')
+      shadowRoot = container.attachShadow({mode: 'open'})
+      shadowRoot.innerHTML = `
+        <details>
+          <summary>Summary</summary>
+          <details-dialog>
+            <button id="button-1">Button 1</button>
+            <button id="button-2">Button 2</button>
+            <button ${CLOSE_ATTR}>Button 3</button>
+          </details-dialog>
+        </details>`
+      document.body.append(container)
+      details = shadowRoot.querySelector('details')
+      summary = shadowRoot.querySelector('summary')
+      dialog = shadowRoot.querySelector('details-dialog')
+    })
+
+    afterEach(function() {
+      document.body.innerHTML = ''
+    })
+
+    it('closes when escape key is pressed', async function () {
+      assert(!details.open)
+      dialog.toggle(true)
+      await waitForToggleEvent(details)
+      assert(details.open)
+      triggerKeydownEvent(details, 'Escape')
+      assert(!details.open)
+    })
+
+    it('manages focus', async function () {
+      summary.click()
+      await waitForToggleEvent(details)
+      assert.equal(shadowRoot.activeElement, dialog)
+      triggerKeydownEvent(details, 'Tab')
+      assert.equal(shadowRoot.activeElement, shadowRoot.querySelector(`#button-1`))
+      triggerKeydownEvent(details, 'Tab')
+      assert.equal(shadowRoot.activeElement, shadowRoot.querySelector(`#button-2`))
+      triggerKeydownEvent(details, 'Tab')
+      assert.equal(shadowRoot.activeElement, shadowRoot.querySelector(`[${CLOSE_ATTR}]`))
+      triggerKeydownEvent(details, 'Tab')
+      assert.equal(shadowRoot.activeElement, shadowRoot.querySelector(`#button-1`))
+    })
+  })
 })
 
 function waitForToggleEvent(details) {
