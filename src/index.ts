@@ -100,7 +100,7 @@ function toggle(event: Event): void {
   if (!(dialog instanceof DetailsDialogElement)) return
 
   if (details.hasAttribute('open')) {
-    const root = dialog.getRootNode() as Document | ShadowRoot
+    const root = 'getRootNode' in dialog ? (dialog.getRootNode() as Document | ShadowRoot) : document
     if (root.activeElement instanceof HTMLElement) {
       initialized.set(dialog, {details, activeElement: root.activeElement})
     }
