@@ -152,6 +152,7 @@ function loadIncludeFragment(event: Event) {
     if (details.hasAttribute('open')) autofocus(dialog)
   })
   loader.setAttribute('src', src)
+  removeIncludeFragmentEventListeners(details)
 }
 
 function updateIncludeFragmentEventListeners(details: Element, src: string | null, preload: boolean) {
