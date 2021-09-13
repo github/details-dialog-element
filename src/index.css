@@ -9,5 +9,5 @@ details-dialog {
   max-height: 80vh;
   max-width: 90vw;
   width: 448px;
-  overflow: scroll;
+  overflow: auto;
 }
