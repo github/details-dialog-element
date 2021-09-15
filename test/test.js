@@ -31,6 +31,8 @@ describe('details-dialog-element', function() {
               <button hidden>hidden</button>
               <div hidden><button>hidden</button></div>
               <details><button>Button in closed details</button></details>
+              <form method="dialog"><button id="method-dialog">method=dialog</button></form>
+              <form><button id="formmethod-dialog" formmethod="dialog">formmethod=dialog</button></form>
               <button ${CLOSE_ATTR}>Goodbye</button>
             </details-dialog>
           </details>
@@ -95,6 +97,10 @@ describe('details-dialog-element', function() {
       assert.equal(document.activeElement, document.querySelector(`[${CLOSE_ATTR}]`))
       triggerKeydownEvent(details, 'Tab')
       assert.equal(document.activeElement, document.querySelector(`[data-button]`))
+      triggerKeydownEvent(details, 'Tab')
+      assert.equal(document.activeElement, document.querySelector(`form[method="dialog"] button`))
+      triggerKeydownEvent(details, 'Tab')
+      assert.equal(document.activeElement, document.querySelector(`[formmethod="dialog"]`))
       triggerKeydownEvent(details, 'Tab')
       assert.equal(document.activeElement, document.querySelector(`[${CLOSE_ATTR}]`))
     })
@@ -198,6 +204,14 @@ describe('details-dialog-element', function() {
         dialog.toggle(true)
         assert(details.open)
         close.click()
+        assert(!details.open)
+        dialog.toggle(true)
+        assert(details.open)
+        dialog.querySelector('#method-dialog').click()
+        assert(!details.open)
+        dialog.toggle(true)
+        assert(details.open)
+        dialog.querySelector('#formmethod-dialog').click()
         assert(!details.open)
       })
 
