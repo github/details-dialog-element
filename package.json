@@ -1,6 +1,6 @@
 {
   "name": "@github/details-dialog-element",
-  "version": "3.1.2",
+  "version": "3.1.3",
   "description": "A modal dialog opened with a <details> button.",
   "repository": "github/details-dialog-element",
   "main": "dist/index.js",
