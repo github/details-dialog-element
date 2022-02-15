@@ -7,6 +7,8 @@ type Disableable = HTMLButtonElement | HTMLInputElement | HTMLTextAreaElement | 
 
 type Focusable = HTMLElement
 
+type SubmitEvent = Event & { submitter: Element | null }
+
 function autofocus(el: DetailsDialogElement): void {
   let autofocusElement = Array.from(el.querySelectorAll<HTMLElement>('[autofocus]')).filter(focusable)[0]
   if (!autofocusElement) {
@@ -195,6 +197,22 @@ class DetailsDialogElement extends HTMLElement {
       const details = target.closest('details')
       if (details && target.closest(CLOSE_SELECTOR)) {
         toggleDetails(details, false)
+      }
+    })
+    this.addEventListener('submit', function(event: Event) {
+      if (!(event.target instanceof HTMLFormElement)) return
+
+      const {target} = event
+      const submitEvent = 'submitter' in event ? event as SubmitEvent : null
+      const submitter = submitEvent?.submitter
+      const method = submitter?.getAttribute('formmethod') || target.getAttribute('method')
+
+      if (method == 'dialog') {
+        event.preventDefault()
+        const details = target.closest('details')
+        if (details) {
+          toggleDetails(details, false)
+        }
       }
     })
   }

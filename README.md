@@ -60,7 +60,8 @@ If the `preload` attribute is present, hovering over the `<details>` element wil
 `details-dialog-close` event is fired from `<details-dialog>` when a request to close the dialog is made from
 
 - pressing <kbd>escape</kbd>,
-- clicking on `summary, [data-close-dialog]`, or
+- submitting a `form[method="dialog"]`
+- clicking on `summary, form button[formmethod="dialog"], [data-close-dialog]`, or
 - `dialog.toggle(false)`
 
 This event bubbles, and can be canceled to keep the dialog open.
