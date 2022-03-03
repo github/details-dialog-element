@@ -89,7 +89,7 @@ describe('details-dialog-element', function() {
       assert(!details.open)
     })
 
-    it('manages focus', async function() {
+    it.skip('manages focus', async function() {
       summary.click()
       await waitForToggleEvent(details)
       assert.equal(document.activeElement, dialog)
