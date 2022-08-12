@@ -43,6 +43,10 @@ Include with a script tag:
 \`\`\``
 }
 
+const escapeHTML = (html) => {
+    return html.replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;').replaceAll('"', '&quot;').replaceAll("'", '&#039;');
+}
+
 export function readme(options) {
   const {filename = 'README.md', exclude = [], title, preamble, footer} = options ?? {}
 
@@ -53,7 +57,7 @@ export function readme(options) {
     async packageLinkPhase({customElementsManifest}) {
       const content = [
         `# ${title || generateTitle({packageJson})}`,
-        packageJson.description,
+        escapeHTML(packageJson.description),
         preamble,
         generateInstallationInstructions({packageJson}),
         `## Usage`,

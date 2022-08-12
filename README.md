@@ -1,6 +1,6 @@
 # &lt;details-dialog&gt; element
 
-A modal dialog opened with a <details> button.
+A modal dialog opened with a &lt;details&gt; button.
 
 ## Installation
   Available on [npm](https://www.npmjs.com/) as [**@github/details-dialog-element**](https://www.npmjs.com/package/@github/details-dialog-element).
