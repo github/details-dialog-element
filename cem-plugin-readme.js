@@ -10,13 +10,13 @@ $ npm install --save ${name}
 
 function generateBrowserSupportInstructions() {
   return `## Browser Support
-  Browsers without native [custom element support][support] require a [polyfill][].
-    - Chrome
-    - Firefox
-    - Safari
-    - Microsoft Edge
-  [support]: https://caniuse.com/custom-elementsv1
-  [polyfill]: https://github.com/webcomponents/custom-elements`
+Browsers without native [custom element support][support] require a [polyfill][].
+  - Chrome
+  - Firefox
+  - Safari
+  - Microsoft Edge
+[support]: https://caniuse.com/custom-elementsv1
+[polyfill]: https://github.com/webcomponents/custom-elements`
 }
 
 function generateTitle({packageJson: {name}}) {
