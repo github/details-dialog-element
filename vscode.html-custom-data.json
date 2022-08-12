@@ -2,7 +2,7 @@
   "tags": [
     {
       "name": "details-dialog",
-      "description": "",
+      "description": "### Markup\n\n```html\n<details>\n  <summary>Open dialog</summary>\n  <details-dialog>\n    Modal content\n    <button type=\"button\" data-close-dialog>Close</button>\n  </details-dialog>\n</details>\n```\n\n## Deferred loading\n\nDialog content can be loaded from a server by embedding an [`<include-fragment>`][fragment] element.\n\n```html\n<details>\n  <summary>Robots</summary>\n  <details-dialog src=\"/robots\" preload>\n    <include-fragment>Loading…</include-fragment>\n  </details-dialog>\n</details>\n```\n\nThe `src` attribute value is copied to the `<include-fragment>` the first time the `<details>` button is toggled open, which starts the server fetch.\n\nIf the `preload` attribute is present, hovering over the `<details>` element will trigger the server fetch.\n\n## Events\n\n### `details-dialog-close`\n\n`details-dialog-close` event is fired from `<details-dialog>` when a request to close the dialog is made from\n\n- pressing <kbd>escape</kbd>,\n- submitting a `form[method=\"dialog\"]`\n- clicking on `summary, form button[formmethod=\"dialog\"], [data-close-dialog]`, or\n- `dialog.toggle(false)`\n\nThis event bubbles, and can be canceled to keep the dialog open.\n\n```js\ndocument.addEventListener('details-dialog-close', function(event) {\n  if (!confirm('Are you sure?')) {\n    event.preventDefault()\n  }\n})\n```",
       "attributes": [{ "name": "src" }, { "name": "preload" }]
     }
   ]

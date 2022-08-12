@@ -1,28 +1,16 @@
 # &lt;details-dialog&gt; element
 
-A modal dialog that's opened with a &lt;details&gt; button.
+A modal dialog opened with a <details> button.
 
 ## Installation
-
-```
-$ npm install --save @github/details-dialog-element
-```
+  Available on [npm](https://www.npmjs.com/) as [**@github/details-dialog-element**](https://www.npmjs.com/package/@github/details-dialog-element).
+    ```
+  $ npm install --save @github/details-dialog-element
+  ```
 
 ## Usage
 
-### Script
-
-Import as ES modules:
-
-```js
-import '@github/details-dialog-element'
-```
-
-Include with a script tag:
-
-```html
-<script type="module" src="./node_modules/@github/details-dialog-element/dist/index.js">
-```
+### details-dialog
 
 ### Markup
 
@@ -74,26 +62,11 @@ document.addEventListener('details-dialog-close', function(event) {
 })
 ```
 
-## Browser support
-
-Browsers without native [custom element support][support] require a [polyfill][].
-
-- Chrome
-- Firefox
-- Safari
-- Microsoft Edge
-
-## Development
-
-```
-npm install
-npm test
-```
-
-## License
-
-Distributed under the MIT license. See LICENSE for details.
-
-[fragment]: https://github.com/github/include-fragment-element/
-[support]: https://caniuse.com/#feat=custom-elementsv1
-[polyfill]: https://github.com/webcomponents/custom-elements
+## Browser Support
+  Browsers without native [custom element support][support] require a [polyfill][].
+    - Chrome
+    - Firefox
+    - Safari
+    - Microsoft Edge
+  [support]: https://caniuse.com/custom-elementsv1
+  [polyfill]: https://github.com/webcomponents/custom-elements
