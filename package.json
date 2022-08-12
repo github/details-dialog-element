@@ -44,5 +44,6 @@
   },
   "eslintIgnore": [
     "dist/"
-  ]
+  ],
+  "customElements": "custom-elements.json"
 }

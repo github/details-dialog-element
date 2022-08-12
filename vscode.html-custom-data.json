@@ -1,0 +1,9 @@
+{
+  "tags": [
+    {
+      "name": "details-dialog",
+      "description": "",
+      "attributes": [{ "name": "src" }, { "name": "preload" }]
+    }
+  ]
+}
