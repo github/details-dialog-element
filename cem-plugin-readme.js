@@ -24,7 +24,7 @@ function generateTitle({packageJson: {name}}) {
     .split('/')
     .at(-1)
     .replace(/-element$/, '')
-  return `&lt;${formattedName}&gt; element`
+  return escapeHTML(`<${formattedName}> element`)
 }
 
 function generateImportInstructions({packageJson: {name}}) {
@@ -64,9 +64,8 @@ export function readme(options) {
         generateImportInstructions({packageJson}),
       ]
       for (const module of customElementsManifest.modules) {
-        for (const {name, tagName, description} of module.declarations.filter(x => x.customElement)) {
+        for (const {name, description} of module.declarations.filter(x => x.customElement)) {
           if (exclude.includes(name)) continue
-          content.push(`### ${tagName}`)
           content.push(description.trim())
         }
       }
