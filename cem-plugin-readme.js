@@ -16,6 +16,7 @@ Browsers without native [custom element support][support] require a [polyfill][]
 - Firefox
 - Safari
 - Microsoft Edge
+
 [support]: https://caniuse.com/custom-elementsv1
 [polyfill]: https://github.com/webcomponents/custom-elements`
 }
@@ -42,6 +43,12 @@ Include with a script tag:
 \`\`\`html
 <script type="module" src="./node_modules/${name}/dist/index.js">
 \`\`\``
+}
+
+function generateLicense() {
+  return `## License
+
+Distributed under the MIT license. See LICENSE for details.`
 }
 
 const escapeHTML = (html) => {
@@ -72,6 +79,7 @@ export function readme(options) {
       }
 
       content.push(generateBrowserSupportInstructions())
+      content.push(generateLicense())
       content.push(footer)
 
       writeFileSync(filename, content.filter(Boolean).join('\n\n'))
