@@ -74,11 +74,12 @@ document.addEventListener('details-dialog-close', function(event) {
 })
 ```
 
-## Browser Support
+## Browser support
+
 Browsers without native [custom element support][support] require a [polyfill][].
-  - Chrome
-  - Firefox
-  - Safari
-  - Microsoft Edge
+- Chrome
+- Firefox
+- Safari
+- Microsoft Edge
 [support]: https://caniuse.com/custom-elementsv1
 [polyfill]: https://github.com/webcomponents/custom-elements
