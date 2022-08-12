@@ -27,8 +27,20 @@ function generateTitle({packageJson: {name}}) {
   return `&lt;${formattedName}&gt; element`
 }
 
-function generateDescription({packageJson: {description}}) {
-  return description
+function generateImportInstructions({packageJson: {name}}) {
+return `### Script
+
+Import as ES modules:
+
+\`\`\`js
+import '${name}'
+\`\`\`
+
+Include with a script tag:
+
+\`\`\`html
+<script type="module" src="./node_modules/${name}/dist/index.js">
+\`\`\``
 }
 
 export function readme(options) {
@@ -41,10 +53,11 @@ export function readme(options) {
     async packageLinkPhase({customElementsManifest}) {
       const content = [
         `# ${title || generateTitle({packageJson})}`,
-        generateDescription({packageJson}),
+        packageJson.description,
         preamble,
         generateInstallationInstructions({packageJson}),
-        `## Usage`
+        `## Usage`,
+        generateImportInstructions({packageJson}),
       ]
       for (const module of customElementsManifest.modules) {
         for (const {name, tagName, description} of module.declarations.filter(x => x.customElement)) {

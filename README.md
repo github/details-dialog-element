@@ -10,6 +10,20 @@ A modal dialog opened with a <details> button.
 
 ## Usage
 
+### Script
+
+Import as ES modules:
+
+```js
+import '@github/details-dialog-element'
+```
+
+Include with a script tag:
+
+```html
+<script type="module" src="./node_modules/@github/details-dialog-element/dist/index.js">
+```
+
 ### details-dialog
 
 ### Markup
