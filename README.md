@@ -3,10 +3,10 @@
 A modal dialog opened with a &lt;details&gt; button.
 
 ## Installation
-  Available on [npm](https://www.npmjs.com/) as [**@github/details-dialog-element**](https://www.npmjs.com/package/@github/details-dialog-element).
-    ```
-  $ npm install --save @github/details-dialog-element
-  ```
+Available on [npm](https://www.npmjs.com/) as [**@github/details-dialog-element**](https://www.npmjs.com/package/@github/details-dialog-element).
+```
+$ npm install --save @github/details-dialog-element
+```
 
 ## Usage
 
@@ -23,8 +23,6 @@ Include with a script tag:
 ```html
 <script type="module" src="./node_modules/@github/details-dialog-element/dist/index.js">
 ```
-
-### details-dialog
 
 ### Markup
 

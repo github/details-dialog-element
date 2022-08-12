@@ -2,10 +2,10 @@ import {accessSync, readFileSync, writeFileSync} from 'fs'
 
 function generateInstallationInstructions({packageJson: {name}}) {
   return `## Installation
-  Available on [npm](https://www.npmjs.com/) as [**${name}**](https://www.npmjs.com/package/${name}).
-    \`\`\`
-  $ npm install --save ${name}
-  \`\`\``
+Available on [npm](https://www.npmjs.com/) as [**${name}**](https://www.npmjs.com/package/${name}).
+\`\`\`
+$ npm install --save ${name}
+\`\`\``
 }
 
 function generateBrowserSupportInstructions() {
