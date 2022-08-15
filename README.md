@@ -1,9 +1,9 @@
 # &lt;details-dialog&gt; element
 
-A modal dialog that's opened with a &lt;details&gt; button.
+A modal dialog opened with a &lt;details&gt; button.
 
 ## Installation
-
+Available on [npm](https://www.npmjs.com/) as [**@github/details-dialog-element**](https://www.npmjs.com/package/@github/details-dialog-element).
 ```
 $ npm install --save @github/details-dialog-element
 ```
@@ -77,23 +77,14 @@ document.addEventListener('details-dialog-close', function(event) {
 ## Browser support
 
 Browsers without native [custom element support][support] require a [polyfill][].
-
 - Chrome
 - Firefox
 - Safari
 - Microsoft Edge
 
-## Development
-
-```
-npm install
-npm test
-```
+[support]: https://caniuse.com/custom-elementsv1
+[polyfill]: https://github.com/webcomponents/custom-elements
 
 ## License
 
 Distributed under the MIT license. See LICENSE for details.
-
-[fragment]: https://github.com/github/include-fragment-element/
-[support]: https://caniuse.com/#feat=custom-elementsv1
-[polyfill]: https://github.com/webcomponents/custom-elements
