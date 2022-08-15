@@ -27,7 +27,10 @@
   ],
   "prettier": "@github/prettier-config",
   "devDependencies": {
+    "@custom-elements-manifest/analyzer": "^0.6.4",
+    "@github/cem-plugin-readme": "^0.0.1",
     "@github/prettier-config": "0.0.4",
+    "cem-plugin-vs-code-custom-data-generator": "^1.0.0-beta.5",
     "chai": "^4.3.4",
     "chromium": "^3.0.3",
     "eslint": "^7.32.0",
@@ -42,5 +45,6 @@
   },
   "eslintIgnore": [
     "dist/"
-  ]
+  ],
+  "customElements": "custom-elements.json"
 }

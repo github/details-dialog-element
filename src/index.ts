@@ -181,6 +181,57 @@ type State = {
 
 const initialized: WeakMap<Element, State> = new WeakMap()
 
+/**
+  * ### Markup
+  * 
+  * ```html
+  * <details>
+  *   <summary>Open dialog</summary>
+  *   <details-dialog>
+  *     Modal content
+  *     <button type="button" data-close-dialog>Close</button>
+  *   </details-dialog>
+  * </details>
+  * ```
+  * 
+  * ## Deferred loading
+  * 
+  * Dialog content can be loaded from a server by embedding an [`<include-fragment>`][fragment] element.
+  * 
+  * ```html
+  * <details>
+  *   <summary>Robots</summary>
+  *   <details-dialog src="/robots" preload>
+  *     <include-fragment>Loading…</include-fragment>
+  *   </details-dialog>
+  * </details>
+  * ```
+  *
+  * The `src` attribute value is copied to the `<include-fragment>` the first time the `<details>` button is toggled open, which starts the server fetch.
+  * 
+  * If the `preload` attribute is present, hovering over the `<details>` element will trigger the server fetch.
+  * 
+  * ## Events
+  * 
+  * ### `details-dialog-close`
+  * 
+  * `details-dialog-close` event is fired from `<details-dialog>` when a request to close the dialog is made from
+  * 
+  * - pressing <kbd>escape</kbd>,
+  * - submitting a `form[method="dialog"]`
+  * - clicking on `summary, form button[formmethod="dialog"], [data-close-dialog]`, or
+  * - `dialog.toggle(false)`
+  * 
+  * This event bubbles, and can be canceled to keep the dialog open.
+  * 
+  * ```js
+  * document.addEventListener('details-dialog-close', function(event) {
+  *   if (!confirm('Are you sure?')) {
+  *     event.preventDefault()
+  *   }
+  * })
+  * ```
+  **/
 class DetailsDialogElement extends HTMLElement {
   static get CLOSE_ATTR() {
     return CLOSE_ATTR
