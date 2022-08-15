@@ -23,7 +23,9 @@
   ],
   "license": "MIT",
   "files": [
-    "dist"
+    "dist",
+    "custom-elements.json",
+    "vscode.html-custom-data.json"
   ],
   "prettier": "@github/prettier-config",
   "devDependencies": {
