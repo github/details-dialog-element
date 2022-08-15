@@ -95,6 +95,25 @@ function onSummaryClick(event: Event): void {
   }
 }
 
+function trapFocus(dialog: DetailsDialogElement, details: Element): void {
+  const root = 'getRootNode' in dialog ? (dialog.getRootNode() as Document | ShadowRoot) : document
+  if (root.activeElement instanceof HTMLElement) {
+    initialized.set(dialog, {details, activeElement: root.activeElement})
+  }
+
+  autofocus(dialog)
+  ;(details as HTMLElement).addEventListener('keydown', keydown)
+}
+
+function releaseFocus(dialog: DetailsDialogElement, details: Element): void {
+  for (const form of dialog.querySelectorAll('form')) {
+    form.reset()
+  }
+  const focusElement = findFocusElement(details, dialog)
+  if (focusElement) focusElement.focus()
+  ;(details as HTMLElement).removeEventListener('keydown', keydown)
+}
+
 function toggle(event: Event): void {
   const details = event.currentTarget
   if (!(details instanceof Element)) return
@@ -102,20 +121,9 @@ function toggle(event: Event): void {
   if (!(dialog instanceof DetailsDialogElement)) return
 
   if (details.hasAttribute('open')) {
-    const root = 'getRootNode' in dialog ? (dialog.getRootNode() as Document | ShadowRoot) : document
-    if (root.activeElement instanceof HTMLElement) {
-      initialized.set(dialog, {details, activeElement: root.activeElement})
-    }
-
-    autofocus(dialog)
-    ;(details as HTMLElement).addEventListener('keydown', keydown)
+    trapFocus(dialog, details)
   } else {
-    for (const form of dialog.querySelectorAll('form')) {
-      form.reset()
-    }
-    const focusElement = findFocusElement(details, dialog)
-    if (focusElement) focusElement.focus()
-    ;(details as HTMLElement).removeEventListener('keydown', keydown)
+    releaseFocus(dialog, details)
   }
 }
 
@@ -300,6 +308,7 @@ class DetailsDialogElement extends HTMLElement {
 
     details.addEventListener('toggle', toggle)
     state.details = details
+    if (details.hasAttribute('open')) trapFocus(this, details)
 
     updateIncludeFragmentEventListeners(details, this.src, this.preload)
   }

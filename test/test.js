@@ -289,6 +289,48 @@ describe('details-dialog-element', function() {
     })
   })
 
+  describe('connected as a child of an already [open] <details> element', function () {
+    let details
+    let dialog
+    let summary
+    let close
+
+    beforeEach(function() {
+      const container = document.createElement('div')
+      container.innerHTML = `
+        <details open>
+          <summary>Click</summary>
+          <details-dialog>
+            <button data-button>Button</button>
+            <button ${CLOSE_ATTR}>Goodbye</button>
+          </details-dialog>
+        </details>
+      `
+      document.body.append(container)
+
+      details = document.querySelector('details')
+      dialog = details.querySelector('details-dialog')
+      summary = details.querySelector('summary')
+      close = dialog.querySelector(CLOSE_SELECTOR)
+    })
+
+    afterEach(function() {
+      document.body.innerHTML = ''
+    })
+
+    it('manages focus', async function() {
+      assert.equal(document.activeElement, dialog)
+      triggerKeydownEvent(document.activeElement, 'Tab', true)
+      assert.equal(document.activeElement, document.querySelector(`[${CLOSE_ATTR}]`))
+      triggerKeydownEvent(document.activeElement, 'Tab')
+      assert.equal(document.activeElement, document.querySelector(`[data-button]`))
+      triggerKeydownEvent(document.activeElement, 'Tab')
+      assert.equal(document.activeElement, document.querySelector(`[${CLOSE_ATTR}]`))
+      triggerKeydownEvent(document.activeElement, 'Tab')
+      assert.equal(document.activeElement, document.querySelector(`[data-button]`))
+    })
+  })
+
   describe('shadow DOM context', function() {
     let shadowRoot, details, summary, dialog
     beforeEach(function() {
