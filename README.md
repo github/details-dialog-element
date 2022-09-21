@@ -2,6 +2,18 @@
 
 A modal dialog opened with a &lt;details&gt; button.
 
+## DEPRECATION WARNING
+
+This web component has been deprecated. There are a number of accessibility concerns with this approach and so we no longer recommend using this component.
+
+### Accessibility and Usability Concerns
+
+* Semantically, using a details-summary pattern for a dialog solution can be confusing for screen reader users.
+* If the user performs a "find in page" operation on a website using details-dialog elements, the content on those elements will appear when they shouldn't.
+* Opening the dialog does not disable scrolling on the underlying page.
+
+GitHub are moving towards using [a dialog Primer View Component](https://primer.style/view-components/components/alpha/dialog) which enforces certain aspects of the design (such as always having a close button and a title).
+
 ## Installation
 Available on [npm](https://www.npmjs.com/) as [**@github/details-dialog-element**](https://www.npmjs.com/package/@github/details-dialog-element).
 ```
