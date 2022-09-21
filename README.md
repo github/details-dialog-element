@@ -2,9 +2,9 @@
 
 A modal dialog opened with a &lt;details&gt; button.
 
-## DEPRECIATED WARNING
+## DEPRECATION WARNING
 
-This web component has been depreciated. There are a number of accessibility concerns with this approach and so we no longer recommend using this component.
+This web component has been deprecated. There are a number of accessibility concerns with this approach and so we no longer recommend using this component.
 
 ### Accessibility and Usability Concerns
 
