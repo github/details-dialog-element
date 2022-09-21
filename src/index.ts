@@ -36,6 +36,7 @@ function focusable(el: Target): boolean {
 function visible(el: Target): boolean {
   return (
     !el.hidden &&
+    !el.closest('details:not([open])') &&
     (!(el as Disableable).type || (el as Disableable).type !== 'hidden') &&
     (el.offsetWidth > 0 || el.offsetHeight > 0)
   )
